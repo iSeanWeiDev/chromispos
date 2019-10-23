@@ -1,0 +1,42 @@
+<body data-gr-c-s-loaded="true">
+  <div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <% include ../partials/_navbar %>
+    <!-- partial -->
+
+    <div class="container-fluid page-body-wrapper">
+
+    <!-- partial:../../partials/_sidebar.html -->
+    <% include ../partials/_sidebar %>
+    <!-- partial -->
+
+      <main class="main-pannel">
+        <div class="row">
+        <% for(var obj of data) { %>
+          <div class="col-md-2 mb-3" 
+            onclick="goReport(<%= obj.id %>, '<%= obj.name %>', <%= isAuthenticated %>)">
+            <div class="card text-white card-report">
+                <img class="card-img-top" src="assets/images/report.jpeg" alt="">
+                <div class="card-body p-1">
+                    <h6 class="text-center font-weight-bold">
+                        <%= obj.detail %>
+                    </h6>
+                </div>
+            </div>
+          </div>
+        <% } %>
+        </div>
+      <!-- partial:../../partials/_footer.html -->
+      <% include ../partials/_footer %>
+      <!-- partial -->
+      </main>
+    <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <% include ../partials/_scripts %>
+  <script src="app/home.js"></script>
+
+</body>

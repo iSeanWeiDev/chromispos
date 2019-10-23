@@ -1,0 +1,100 @@
+<body data-gr-c-s-loaded="true">
+    <div class="container-scroller">
+        <!-- partial:../../partials/_navbar.html -->
+        <% include ../../partials/_navbar %>
+        <!-- partial -->
+
+        <div class="container-fluid page-body-wrapper">
+
+        <!-- partial:../../partials/_sidebar.html -->
+        <% include ../../partials/_sidebar %>
+        <!-- partial -->
+
+            <main class="main-panel">
+                <div class="offset-xl-3 col-md-6 text-center"> 
+                    <form action="/auth/register" method="POST" id="signup" class="mt-5">
+                        <div class="form-group">
+                            <h3 class="font-wight-bold text-uppercase text-white">
+                                <strong>
+                                        Sign up
+                                </strong>
+                            </h3>
+                        </div>
+                        <div class="form-group">
+                            <input type="text" 
+                                class="auth-form-input"
+                                placeholder="User name"
+                                id="signup-username"
+                                required 
+                                autofocus
+                                autocomplete="true">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="email" 
+                                class="auth-form-input"
+                                id="signup-email"
+                                placeholder="User email"
+                                required 
+                                autofocus
+                                autocomplete="true">
+                        </div>
+                        
+                        <div class="form-group">
+                            <input type="password" 
+                                class="auth-form-input"
+                                id="signup-password" 
+                                placeholder="Password"
+                                required
+                                autocomplete="true">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" 
+                                class="auth-form-input"
+                                id="signup-rpassword" 
+                                placeholder="Confirm"
+                                required
+                                autocomplete="true">
+                        </div>
+
+                        <div class="form-group">
+                            <input type="password" 
+                                class="auth-form-input"
+                                id="signup-token" 
+                                placeholder="Private token"
+                                required
+                                autocomplete="true">
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" 
+                                class="btn btn-raised text-white pl-5 pr-5" 
+                                style="background-color: #2196f3">
+                                Sign up
+                            </button>
+                        </div>
+                        <div class="form-group auth-bottom-title">
+                            If you have account,
+                            <a href="/login">
+                                get start
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            <!-- content-wrapper ends -->
+
+            <!-- partial:../../partials/_footer.html -->
+            <% include ../../partials/_footer %>
+            <!-- partial -->
+            </main>
+        <!-- main-panel ends -->
+        </div>
+        <!-- page-body-wrapper ends -->
+    </div>
+    <!-- container-scroller -->
+
+    <% include ../../partials/_scripts %>
+
+    <script src="app/auth/register.js"></script>
+</body>

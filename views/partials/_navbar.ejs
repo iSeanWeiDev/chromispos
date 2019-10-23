@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-sm navbar-dark" id="header" style="background-color: #1976d2;">
+  <a class="navbar-brand text-uppercase font-weight-bold" id="header-brand" href="/">
+      chromis pos
+  </a>
+  <button class="navbar-toggler d-lg-none" 
+    type="button" 
+    data-toggle="collapse" 
+    data-target="#collapsibleNavId" 
+    aria-controls="collapsibleNavId"
+    aria-expanded="false" aria-label="Toggle navigation"></button>
+  <% if (isAuthenticated == false) { %>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+            <li class="nav-item active font-weight-bold">
+                <a class="nav-link" href="/login">
+                    log in
+                </a>
+            </li>
+            <li class="nav-item active font-weight-bold">
+                <a class="nav-link" href="/register">
+                    sign up
+                </a>
+            </li>
+        </ul>
+    </div>
+  <% } %>
+
+  <% if (isAuthenticated == true) { %>
+    <div class="collapse navbar-collapse" id="collapsibleNavId">
+      <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        <li class="nav-item dropdown pr-2">
+          <a class="nav-link dropdown-toggle" 
+            href="#" id="dropdownId" 
+            data-toggle="dropdown" 
+            aria-haspopup="true" 
+            aria-expanded="false">
+              <%= user.userName %>
+          </a>
+          <div class="dropdown-menu" aria-labelledby="dropdownId">
+            <a class="dropdown-item p-2" href="/profile">
+                <i class="material-icons pr-1">
+                    person
+                </i> 
+                Profile
+            </a>
+            <a class="dropdown-item p-2" href="/logout">
+                <i class="material-icons pr-1">
+                    exit_to_app
+                </i>
+                Log out
+            </a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  <% } %>
+</nav>
