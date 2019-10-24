@@ -9,7 +9,7 @@
     <!-- partial:../../partials/_sidebar.html -->
     <% include ../../partials/_sidebar %>
     <!-- partial -->
-    <% console.log(data) %>
+
       <main class="main-panel">
         <div class="col-md-6 offset-xl-3">
           <div class="card db-setting">
@@ -132,7 +132,7 @@
 
             <div class="card-body bg-light p-5">
               <div id="accordion">
-              
+              <% console.log(data) %>
               <%  var index = 0;
                   for(var obj of data) {  index++; %>
                 <div class="card mb-1"  id="headingOne-<%= obj.id %>">
@@ -143,7 +143,7 @@
                                     Database <%= index %> : 
                                 </b>
                                 <strong class="text-info">
-                                    <%= obj.connection_name %>
+                                    <%= obj.hostName %>
                                 </strong>
                             </button>
                             <a href="#"
@@ -170,7 +170,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">Connection name: </label>
-                                    <input type="text" class="form-control" value="<%= obj.connection_name %>">
+                                    <input type="text" class="form-control" value="<%= obj.hostName %>">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -185,7 +185,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">User name: </label>
-                                    <input type="text" class="form-control" value="<%= obj.db_user_name %>">
+                                    <input type="text" class="form-control" value="<%= obj.userName %>">
                                 </div>
                             </div>
                             <div class="col-md-6">
@@ -206,7 +206,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label for="">Database name: </label>
-                                    <input type="text" class="form-control" value="<%= obj.db_name %>">
+                                    <input type="text" class="form-control" value="<%= obj.dbName %>">
                                 </div>
                             </div>
                         </div>

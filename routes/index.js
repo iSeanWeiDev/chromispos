@@ -1,11 +1,11 @@
 var express = require('express');
 var router = express.Router();
-var reportService = require('../services/report');
+var sqliteService = require('../services/sqlite');
 var settingService = require('../services/setting');
 
 /* GET home page. */
 router.get('/', function(req, res) {
-  reportService.getReportList('initial', cb => {
+  sqliteService.getReportList('initial', cb => {
     if(req.session.authenticated) {
       return res.redirect('/home');
     } 
@@ -44,7 +44,7 @@ router.get('/register', function(req, res) {
 
 router.get('/home', isAuthenticated, function(req, res) {
   var role = req.session.user.role;
-  reportService.getReportList(role, cb => {
+  sqliteService.getReportList(role, cb => {
     res.render('pages/home', {
       data: cb,
       user: req.session.user,

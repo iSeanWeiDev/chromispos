@@ -6,6 +6,7 @@ settingService.validateConn = validateConn;
 settingService.getDBConnList = getDBConnList;
 
 function validateConn(data, cb) {
+console.log('data :', data);
   const pool = mysql.createPool(data);
 
   pool.getConnection((err, conn) => {
@@ -22,9 +23,9 @@ function getDBConnList(cb) {
     .then(result => {
       var arrDbConnList = [];
       if(result.length > 0) {
-        result.foreach(item => {
-          arrDbConnList.push(item.get());
-        });
+        for(var obj of result) {
+          arrDbConnList.push(obj.get());
+        }
 
         cb(arrDbConnList);
       } else {

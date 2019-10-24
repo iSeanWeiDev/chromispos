@@ -6,12 +6,13 @@ var settingController = {
     var data = {
       host: req.body.host,
       user: req.body.userName,
+      password: req.body.password,
       database: req.body.dbName,
-      waitForConnections: true,
-      connectionLimit: 100,
-      queueLimit: 0
+      connectionLimit: 10,
     }
     settingService.validateConn(data, cb => {
+      console.log('cb :', cb);
+
       if (cb == true) {
         DbModel.create(req.body)
           .then(result => {
