@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var reportService = require('../services/report');
+var settingService = require('../services/setting');
 
 /* GET home page. */
 router.get('/', function(req, res) {
@@ -52,12 +53,24 @@ router.get('/home', isAuthenticated, function(req, res) {
   })
 });
 
+router.get('/settings', isAuthenticated, (req, res) => {
+  settingService.getDBConnList(cb => {
+    res.render('pages/admin/setting', {
+      data: cb,
+      user: req.session.user,
+      isAuthenticated: true
+    })
+  });
+});
+
 router.get('/:reportname', isAuthenticated, (req, res) => {
   res.render('pages/reports/'+req.params.reportname, {
     user: req.session.user,
     isAuthenticated: true,
   })
 });
+
+
 
 function isAuthenticated(req, res, next) {
   if(req.session.authenticated) {

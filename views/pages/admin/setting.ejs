@@ -1,0 +1,237 @@
+<body data-gr-c-s-loaded="true">
+  <div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <% include ../../partials/_navbar %>
+    <!-- partial -->
+
+    <div class="container-fluid page-body-wrapper">
+
+    <!-- partial:../../partials/_sidebar.html -->
+    <% include ../../partials/_sidebar %>
+    <!-- partial -->
+    <% console.log(data) %>
+      <main class="main-panel">
+        <div class="col-md-6 offset-xl-3">
+          <div class="card db-setting">
+            <div class="card-header">
+              <button type="button" class="btn btn-danger bmd-btn-icon">
+                  <i class="material-icons">more_vert</i>
+              </button>
+              
+              <span class="text-info font-weight-bold text-uppercase" style="font-size: 20px;">
+                  Setting
+              </span>
+
+              <button type="button" 
+                  class="btn btn-danger bmd-btn-fab btn-add"
+                  data-toggle="modal" 
+                  data-target="#addModal">
+                  <i class="material-icons">add</i>
+              </button>
+
+              <!-- Modal -->
+              <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                          <form method="POST"
+                              action="/setting/newconnection"
+                              id="new-db-connection">
+                              <div class="modal-header">
+                                  <h5 class="modal-title font-weight-bold">Add Database Connection</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                              <div class="modal-body">
+                                  <div class="container-fluid">
+
+                                      <div class="form-group">
+                                          <label for="" class="p-1">
+                                              Connection Name :
+                                          </label>
+                                          <input type="text" 
+                                              id="connection-name"
+                                              class="input-add-db-connection"
+                                              placeholder="ex: local_server"
+                                              autofocus
+                                              required>
+                                      </div>
+
+                                      <div class="form-group">
+                                          <label for="" class="p-1">
+                                              Host IP address :
+                                          </label>
+                                          <input type="text" 
+                                              id="host-ip"
+                                              class="input-add-db-connection"
+                                              placeholder="ex: 127.0.0.1"
+                                              required>
+                                      </div>
+
+                                      <div class="form-group">
+                                          <label for="" class="p-1">
+                                              Port :
+                                          </label>
+                                          <input type="text" 
+                                              id="db-port"
+                                              class="input-add-db-connection"
+                                              placeholder="ex: 3306"
+                                              required>
+                                      </div>
+
+                                      <div class="form-group">
+                                          <label for="" class="p-1">
+                                              User name :
+                                          </label>
+                                          <input type="text" 
+                                              id="db-username"
+                                              class="input-add-db-connection"
+                                              placeholder="ex: root"
+                                              required>
+                                      </div>
+
+                                      <div class="form-group">
+                                          <label for="" class="p-1">
+                                              Password :
+                                          </label>
+                                          <input type="password" 
+                                              id="db-password"
+                                              class="input-add-db-connection"
+                                              placeholder=" ex: *********">
+                                      </div>
+
+                                      <div class="form-group">
+                                          <label for="" class="p-1">
+                                              Database name :
+                                          </label>
+                                          <input type="text" 
+                                              id="db-name"
+                                              class="input-add-db-connection"
+                                              placeholder=" ex: chromispos"
+                                              required>
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="modal-footer">
+                                  <button type="button" 
+                                      class="btn btn-secondary" 
+                                      data-dismiss="modal">
+                                      Close
+                                  </button>
+
+                                  <button type="submit" 
+                                      class="btn btn-primary">
+                                      Save
+                                  </button>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+            </div>
+
+            <div class="card-body bg-light p-5">
+              <div id="accordion">
+              
+              <%  var index = 0;
+                  for(var obj of data) {  index++; %>
+                <div class="card mb-1"  id="headingOne-<%= obj.id %>">
+                    <div class="card-header">
+                        <div class="mb-0">
+                            <button class="btn btn-link" style="text-decoration: none;">
+                                <b>
+                                    Database <%= index %> : 
+                                </b>
+                                <strong class="text-info">
+                                    <%= obj.connection_name %>
+                                </strong>
+                            </button>
+                            <a href="#"
+                                onclick="deleteConnection(<%= obj.id %>)"
+                                class="float-right btn btn-danger">
+                                delete
+                            </a>
+                            <a href="#" 
+                                id="view-connection"
+                                class="float-right btn btn-info pr-2"
+                                data-toggle="collapse" 
+                                data-target="#collapse-<%=obj.id%>" 
+                                aria-expanded="true" 
+                                aria-controls="collapseOne">
+                                view
+                            </a>
+                        </div>
+                        
+                    </div>
+                
+                    <div id="collapse-<%=obj.id%>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Connection name: </label>
+                                    <input type="text" class="form-control" value="<%= obj.connection_name %>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Host IP address: </label>
+                                    <input type="text" class="form-control" value="<%= obj.host %>">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">User name: </label>
+                                    <input type="text" class="form-control" value="<%= obj.db_user_name %>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Password: </label>
+                                    <input type="password" class="form-control" value="<%= obj.password %>">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Connection port: </label>
+                                    <input type="text" class="form-control" value="<%= obj.port %>">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="">Database name: </label>
+                                    <input type="text" class="form-control" value="<%= obj.db_name %>">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+              <% } %>
+                  
+              </div>
+            </div>
+          </div>
+        </div>
+      <!-- content-wrapper ends -->
+
+      <!-- partial:../../partials/_footer.html -->
+      <% include ../../partials/_footer %>
+      <!-- partial -->
+      </main>
+    <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <% include ../../partials/_scripts %>
+
+  <script src="app/admin/setting.js"></script>
+</body>
