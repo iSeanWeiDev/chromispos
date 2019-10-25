@@ -18,7 +18,7 @@ module.exports = {
         name: 'salesbyday',
         detail: 'Sales by day',
         isAdmin: true,
-        isUser: true,
+        isUser: false,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -26,7 +26,7 @@ module.exports = {
         name: 'salesbymonth',
         detail: 'Sales by month',
         isAdmin: true,
-        isUser: true,
+        isUser: false,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -34,7 +34,7 @@ module.exports = {
         name: 'salesbyyear',
         detail: 'Sales by year',
         isAdmin: true,
-        isUser: true,
+        isUser: false,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -42,7 +42,7 @@ module.exports = {
         name: 'categorysales',
         detail: 'Category Sales',
         isAdmin: true,
-        isUser: true,
+        isUser: false,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -50,7 +50,7 @@ module.exports = {
         name: 'inventory',
         detail: 'Inventory',
         isAdmin: true,
-        isUser: true,
+        isUser: false,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -58,7 +58,7 @@ module.exports = {
         name: 'timeclock',
         detail: 'Time Clock',
         isAdmin: true,
-        isUser: true,
+        isUser: false,
         createdAt: new Date(),
         updatedAt: new Date()
       },
@@ -74,7 +74,7 @@ module.exports = {
         name: 'productsales',
         detail: 'Product Sales',
         isAdmin: true,
-        isUser: true,
+        isUser: false,
         createdAt: new Date(),
         updatedAt: new Date()
       }

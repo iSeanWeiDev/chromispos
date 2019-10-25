@@ -64,10 +64,13 @@ router.get('/settings', isAuthenticated, (req, res) => {
 });
 
 router.get('/:reportname', isAuthenticated, (req, res) => {
-  res.render('pages/reports/'+req.params.reportname, {
-    user: req.session.user,
-    isAuthenticated: true,
-  })
+  settingService.getDBConnList(cb => {
+    res.render('pages/reports/'+req.params.reportname, {
+      user: req.session.user,
+      isAuthenticated: true,
+      data: cb,
+    });
+  });
 });
 
 

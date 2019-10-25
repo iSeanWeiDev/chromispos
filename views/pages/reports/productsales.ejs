@@ -1,0 +1,239 @@
+<body data-gr-c-s-loaded="true">
+  <div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <% include ../../partials/_navbar %>
+    <!-- partial -->
+
+    <div class="container-fluid page-body-wrapper">
+
+    <!-- partial:../../partials/_sidebar.html -->
+    <% include ../../partials/_sidebar %>
+    <!-- partial -->
+    <style>
+      .report-body .report-body-title-center input {
+        padding: 0.5em;
+        border-radius: 7px;
+        width: 250px;
+        font-weight: 500;
+        font-size: 18px;
+        color: #2196f3;
+        position: fixed;
+        right: 24vw;
+      }
+
+      .report-body table tbody {
+        height: calc(75vh - 80px);
+        padding: 0px;
+        width: 98%;
+        overflow-y: auto;
+      }
+
+      #display-report tr {
+        font-size: 14px;
+        cursor: auto;
+      }
+    </style>
+      
+      <div class="main-panel">
+        <div class="content-wrapper"> 
+          <div class="row report-menu">
+            <div class="report-menu-category1 text-center">
+              <h6 class="text-white font-weight-bold">
+                Choose the database
+              </h6>
+              <div class="form-group">
+                <select class="custom-select" name="" id="select-db-host">
+                  <option value="0" selected>
+                    Select one
+                  </option>
+                <% for(var obj of data) { %>
+                  <option value="<%= JSON.stringify(obj) %>">
+                  <%= obj.hostName %>
+                  </option>
+                <% } %>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <input type="text"
+                  class="report-show-database-name"
+                  disabled>
+                <input type="text" id="database-index" hidden>
+              </div>
+
+              <div class="form-group">
+                <select class="custom-select" name="" id="select-category">
+                  <option value="all" selected>
+                    All Categories
+                  </option>
+                </select>
+              </div>
+              <div class="form-group">
+                <select class="custom-select" name="" id="select-supplier">
+                  <option value="all" selected>
+                    All Suppliers
+                  </option>
+                </select>
+              </div>
+            </div>
+
+            <div class="report-menu-category2">
+              <div class="form-group">
+                <input type="text" 
+                  id="report-start-date"
+                  class="report-input-date"
+                  placeholder="Start date">
+              </div>
+
+              <div class="form-group">
+                <input type="text" 
+                  id="report-end-date"
+                  class="report-input-date"
+                  placeholder="End date">
+              </div>
+              
+              <div class="form-group">
+                <select class="custom-select" name="" id="date-range">
+                  <option value="0" selected>
+                      Select range
+                  </option>
+                  <option value="1">Today </option>
+                  <option value="2">Yesterday</option>
+                  <option value="3">Last 7 Days</option>
+                  <option value="4">This Month </option>
+                  <option value="5">Last Month</option>
+                  <option value="6">Last 90 Days</option>
+                  <option value="7">This Year</option>
+                  <option value="8">Last Year</option>
+                </select>
+              </div>
+
+              <div class="form-group pl-2">
+                <button type="button"
+                  onclick="generateReport()" 
+                  class="btn btn-raised btn-info pl-4 pr-4">
+                  <i class="fa fa-edit"></i>
+                  Generate
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="report-body pl-5 pr-5 pt-4 pb-4">
+            <div class="row report-body-title">
+              <div class="report-body-title-left">
+                <h2 class="text-info font-weight-bold">
+                  Product Sales
+                </h2>
+              </div>
+
+              <div class="report-body-title-center">
+                <input type="text" id="table-search" placeholder="Search">
+              </div>
+            </div>
+            <div class="erport-body-content">
+              <span class="text-dark font-weight-bold p-0">
+                <strong>
+                Period
+                </strong>
+              </span>
+              <hr class="p-0 m-0 text-info" style="border-top: 3px solid #03a9f4!important;">
+                
+              <table class="table table-fixed table-hover" id="report-table">
+                <thead>
+                  <tr>
+                    <th onclick="sortColumn(1)"
+                        class="text-dark text-left font-weight-bold p-1 sortStyle">
+                        Items
+                    </th>
+                    <th onclick="sortColumn(2)"
+                        class="text-dark text-left font-weight-bold p-1 sortStyle" style="width: calc(100% / 3);">
+                        Name
+                    </th>
+                    <th onclick="sortColumn(3)"
+                        class="text-dark text-left font-weight-bold p-1 sortStyle">
+                        Avg.Price
+                    </th>
+                    <th onclick="sortColumn(4)"
+                        class="text-dark text-center font-weight-bold p-1 sortStyle">
+                        QTY sold
+                    </th>
+                    <th onclick="sortColumn(5)"
+                        class="text-dark text-center font-weight-bold p-1 sortStyle">
+                        Total
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="display-report">
+                    <!-- Add body dynamically -->
+                </tbody>
+              </table>
+
+              <div class="form-group" id="pagination">
+                <div class="text-center">
+                    <span class="font-weight-bold text-info" 
+                      id="current-rows"></span>
+                    <button type="button"
+                      onclick="firstPage()"
+                      class="btn btn-info btn-default" 
+                      title="PREVIOUS">
+                      <i class="material-icons">
+                      skip_previous
+                      </i>
+                    </button>
+                    <button type="button"
+                      onclick="previousPage()" 
+                      class="btn btn-info btn-default" 
+                      title="BEFORE">
+                      <i class="material-icons">
+                      keyboard_arrow_left
+                      </i>
+                    </button>
+
+                    <input type="text" 
+                      id="pagination-display" 
+                      value="0000 / 0000" 
+                      disabled>
+
+                    <button type="button"
+                      onclick="nextPage()"
+                      class="btn btn-info btn-default" 
+                      title="NEXT">
+                      <i class="material-icons">
+                      keyboard_arrow_right
+                      </i>
+                    </button>
+                    <button type="button" 
+                      onclick="lastPage()"
+                      class="btn btn-info btn-default" 
+                      title="LAST">
+                      <i class="material-icons">
+                      skip_next
+                      </i>
+                    </button>
+
+                    <span class="font-weight-bold text-info" 
+                      id="total-rows"></span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row report-menu-bottom">
+
+          </div>
+        </div>
+      <!-- content-wrapper ends -->
+
+      <!-- partial:../../partials/_footer.html -->
+      <% include ../../partials/_footer %>
+      <!-- partial -->
+      </div>
+    <!-- main-panel ends -->
+    </div>
+    <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
+
+  <% include ../../partials/_scripts %>
+  <script src="app/reports/productsales.js"></script>
+</body>

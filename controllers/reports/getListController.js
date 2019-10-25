@@ -8,7 +8,7 @@ var getListContorller = {
     if (req.query.report == "inventory") {
       var dbName = process.env.SHOP_NAME;
     } else {
-      var dbName = ""
+      var dbName = req.query.hostName;
     }
 
     sqliteService.getDbInfoByName(dbName, cb => {
@@ -51,7 +51,7 @@ var getListContorller = {
     if (req.query.report == "inventory") {
       var dbName = process.env.SHOP_NAME;
     } else {
-      var dbName = ""
+      var dbName = req.query.hostName;
     }
 
     sqliteService.getDbInfoByName(dbName, cb => {

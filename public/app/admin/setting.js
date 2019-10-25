@@ -35,7 +35,7 @@ $(document).ready(function () {
         );
 
         setTimeout(() => {
-          window.open('/setting', '_self');
+          window.open('/settings', '_self');
         }, 1000);
       } else {
         mkNoti(
