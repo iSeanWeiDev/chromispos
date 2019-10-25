@@ -1,17 +1,19 @@
 require('dotenv').config();
 var mysql = require('mysql2');
 var sqliteService = require('../../services/sqlite');
-var queryList = require('../../database/queries/salesByDay');
+var queryList = require('../../database/queries/salesByYear');
 
-var salesByDayController = {
+var salesByYearController = {
   getData: (req, res) => {
     sqliteService.getDbInfoByName(req.query.hostName, cb => {
       var dbInfo = cb;
-      var query = queryList.getData;
-      var params = [
-        req.query.startDate,
-        req.query.endDate
-      ];
+      if(req.query.categoryID == 'all') {
+        var query = queryList.getData.replace('***', '');
+        var params = [];
+      } else {
+        var query = queryList.getData.replace('***', `AND CATEGORIES.id = '${req.query.categoryID}'`);
+        var params = [];
+      }
 
       var dbConn = mysql.createConnection({
         host: dbInfo.host,
@@ -40,4 +42,4 @@ var salesByDayController = {
   },
 }
 
-module.exports = salesByDayController;
+module.exports = salesByYearController;

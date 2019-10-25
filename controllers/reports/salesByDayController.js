@@ -10,14 +10,17 @@ var salesByDayController = {
 
       if(req.query.categoryID == 'all') {
         var query = queryList.getData.replace('***', '');
+        var params = [
+          req.query.startDate,
+          req.query.endDate
+        ];
       } else {
         var query = queryList.getData.replace('***', `AND CATEGORIES.id = '${req.query.categoryID}'`);
+        var params = [
+          req.query.startDate,
+          req.query.endDate
+        ];
       }
-
-      var params = [
-        req.query.startDate,
-        req.query.endDate
-      ];
 
       var dbConn = mysql.createConnection({
         host: dbInfo.host,
@@ -26,6 +29,8 @@ var salesByDayController = {
         database: dbInfo.dbName,
         port: dbInfo.port,
       });
+
+      console.log(query, params);
 
       dbConn.query(query, params, (error, result) => {
         if (error) {

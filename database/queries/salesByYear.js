@@ -8,14 +8,14 @@ var salesByYear = {
               SUM(SUBTOTAL) AS TOTAL 
             FROM  ( 
               SELECT  
-                  DATE_FORMAT(RECEIPTS.DATENEW,'%Y-%m-%d') AS DATENEW, 
+                  DATE_FORMAT(RECEIPTS.DATENEW,'%Y') AS DATENEW, 
                   TICKETS.ID, 
                   SUM(TICKETLINES.UNITS) AS UNITS, 
                   SUM(TICKETLINES.PRICE * TICKETLINES.UNITS) AS SUBTOTALSALES, 
                   SUM(TICKETLINES.PRICE * TICKETLINES.UNITS * TAXES.RATE) AS SUBTOTALTAXCOLLECTED, 
                   SUM((TICKETLINES.PRICE+TICKETLINES.PRICE*TAXES.RATE)*TICKETLINES.UNITS) AS SUBTOTAL 
               FROM  
-                  TICKETLINES, PRODUCTS, TICKETS, RECEIPTS, TAXES 
+                  TICKETLINES, PRODUCTS, TICKETS, RECEIPTS, TAXES, CATEGORIES 
               WHERE 
                   RECEIPTS.ID = TICKETS.ID 
                   AND TICKETS.ID = TICKETLINES.TICKET 
@@ -24,7 +24,8 @@ var salesByYear = {
                   AND TICKETLINES.PRODUCT = PRODUCTS.ID 
                   AND TICKETS.ID = TICKETLINES.TICKET 
                   AND RECEIPTS.ID = TICKETS.ID 
-                  AND DATENEW BETWEEN ? AND ? 
+                  AND CATEGORIES.id = PRODUCTS.CATEGORY
+                  ***
               GROUP BY DATE_FORMAT(RECEIPTS.DATENEW,'%Y'), TICKETS.ID 
             ) AS SQ 
             GROUP BY DATENEW 
