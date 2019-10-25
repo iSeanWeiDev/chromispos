@@ -1,193 +1,193 @@
 <body data-gr-c-s-loaded="true">
-	<div class="container-scroller">
-		<!-- partial:../../partials/_navbar.html -->
-		<% include ../../partials/_navbar %>
-		<!-- partial -->
+  <div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <% include ../../partials/_navbar %>
+    <!-- partial -->
 
-		<div class="container-fluid page-body-wrapper">
+    <div class="container-fluid page-body-wrapper">
 
-		<!-- partial:../../partials/_sidebar.html -->
-		<% include ../../partials/_sidebar %>
-		<!-- partial -->
-		<style>
-			.report-body {
-				position: fixed;
-				top: 100px;
-				left: 3vw;
-				width: 94vw;
-				height: 85vh;
-				background-color: white;
-				box-shadow: 5px 10px 18px #6d6969;
-			}
-			.report-body table tbody {
-				height: calc(75vh - 110px);
-				padding: 0px;
-				overflow-y: auto;
-			}
+    <!-- partial:../../partials/_sidebar.html -->
+    <% include ../../partials/_sidebar %>
+    <!-- partial -->
+    <style>
+      .report-body {
+        position: fixed;
+        top: 100px;
+        left: 3vw;
+        width: 94vw;
+        height: 85vh;
+        background-color: white;
+        box-shadow: 5px 10px 18px #6d6969;
+      }
+      .report-body table tbody {
+        height: calc(75vh - 110px);
+        padding: 0px;
+        overflow-y: auto;
+      }
 
-			.report-menu-bottom {
-				height: calc(60vh - 60px);
-				background-color: rgba(248,248,248, 0.9);
-				border-bottom: 15px solid #2196f3;
-			}
+      .report-menu-bottom {
+        height: calc(60vh - 60px);
+        background-color: rgba(248,248,248, 0.9);
+        border-bottom: 15px solid #2196f3;
+      }
 
-			.report-body .report-body-title-center input {
-				padding: 0.5em;
-				border-radius: 7px;
-				width: 250px;
-				font-weight: 500;
-				font-size: 18px;
-				color: #2196f3;
-				position: fixed;
-				right: 7vw;
-			}
+      .report-body .report-body-title-center input {
+        padding: 0.5em;
+        border-radius: 7px;
+        width: 250px;
+        font-weight: 500;
+        font-size: 18px;
+        color: #2196f3;
+        position: fixed;
+        right: 7vw;
+      }
 
-			.jconfirm {
-				position: fixed;
-				top: -500px;
-				left: 0px;
-				right: 0px;
-				bottom: 0px;
-				z-index: 99999999;
-				font-family: inherit;
-				overflow: hidden;
-			}
+      .jconfirm {
+        position: fixed;
+        top: -500px;
+        left: 0px;
+        right: 0px;
+        bottom: 0px;
+        z-index: 99999999;
+        font-family: inherit;
+        overflow: hidden;
+      }
 
-		</style>
-		<div class="main-panel">
-			<div class="content-wrapper"> 
-				<div class="row report-menu">
-				</div>
+    </style>
+    <div class="main-panel">
+      <div class="content-wrapper"> 
+        <div class="row report-menu">
+        </div>
 
-				<div class="report-body pl-5 pr-5 pt-4 pb-4">
-					<div class="row report-body-title">
-						<div class="report-body-title-left">
-							<h2 class="text-info font-weight-bold">
-									Stock Diary
-							</h2>
-						</div>
+        <div class="report-body pl-5 pr-5 pt-4 pb-4">
+          <div class="row report-body-title">
+            <div class="report-body-title-left">
+              <h2 class="text-info font-weight-bold">
+                  Stock Diary
+              </h2>
+            </div>
 
-						<div class="report-body-title-center">
-							<input type="text" id="table-search" placeholder="Search">
-						</div>
-					</div>
-						<div class="erport-body-content">
-							<span class="text-dark font-weight-bold p-0">
-								<strong>
-								Period
-								</strong>
-							</span>
-							<hr class="p-0 m-0 text-info" style="border-top: 3px solid #03a9f4!important;">
-							
-							<table class="table table-fixed table-hover" id="report-table">
-								<thead>
-									<tr>
-										<th onclick="sortColumn(1)"
-												class="text-dark font-weight-bold p-1 sortStyle"
-												style="width: 15%">
-												Reference
-										</th>
-										<th onclick="sortColumn(2)"
-												class="text-dark font-weight-bold p-1 sortStyle"
-												style="width: 40%">
-												Name
-										</th>
-										<th onclick="sortColumn(3)"
-												class="text-dark text-center font-weight-bold p-1 sortStyle"
-												style="width: 10%">
-												Price
-										</th>
-										<th 
-												class="text-dark text-center font-weight-bold p-1"
-												style="width: 12.5%">
-												Sales Floor QTY
-										</th>
-										<th 
-												class="text-dark text-center font-weight-bold p-1"
-												style="width: 12.5%">
-												Warehouse QTY
-										</th>
-										<th class="text-dark text-center font-weight-bold p-1"
-												style="width: 10%">
-												*
-										</th>
-									</tr>
-								</thead>
-								<tbody id="display-report">
-										<!-- Add body dynamically -->
-								</tbody>
-								<tfoot>
-										<!-- Add footer dynamically -->
-								</tfoot>
-							</table>
+            <div class="report-body-title-center">
+              <input type="text" id="table-search" placeholder="Search">
+            </div>
+          </div>
+            <div class="erport-body-content">
+              <span class="text-dark font-weight-bold p-0">
+                <strong>
+                Period
+                </strong>
+              </span>
+              <hr class="p-0 m-0 text-info" style="border-top: 3px solid #03a9f4!important;">
+              
+              <table class="table table-fixed table-hover" id="report-table">
+                <thead>
+                  <tr>
+                    <th onclick="sortColumn(1)"
+                        class="text-dark font-weight-bold p-1 sortStyle"
+                        style="width: 15%">
+                        Reference
+                    </th>
+                    <th onclick="sortColumn(2)"
+                        class="text-dark font-weight-bold p-1 sortStyle"
+                        style="width: 40%">
+                        Name
+                    </th>
+                    <th onclick="sortColumn(3)"
+                        class="text-dark text-center font-weight-bold p-1 sortStyle"
+                        style="width: 10%">
+                        Price
+                    </th>
+                    <th 
+                        class="text-dark text-center font-weight-bold p-1"
+                        style="width: 12.5%">
+                        Sales Floor QTY
+                    </th>
+                    <th 
+                        class="text-dark text-center font-weight-bold p-1"
+                        style="width: 12.5%">
+                        Warehouse QTY
+                    </th>
+                    <th class="text-dark text-center font-weight-bold p-1"
+                        style="width: 10%">
+                        *
+                    </th>
+                  </tr>
+                </thead>
+                <tbody id="display-report">
+                    <!-- Add body dynamically -->
+                </tbody>
+                <tfoot>
+                    <!-- Add footer dynamically -->
+                </tfoot>
+              </table>
 
-							<div class="form-group" id="pagination">
-								<div class="text-center">
-									<span class="font-weight-bold text-info" 
-											id="current-rows"></span>
-									<button type="button"
-											onclick="firstPage()"
-											class="btn btn-info btn-default" 
-											title="PREVIOUS">
-											<i class="material-icons">
-											skip_previous
-											</i>
-									</button>
-									<button type="button"
-											onclick="previousPage()" 
-											class="btn btn-info btn-default" 
-											title="BEFORE">
-											<i class="material-icons">
-											keyboard_arrow_left
-											</i>
-									</button>
+              <div class="form-group" id="pagination">
+                <div class="text-center">
+                  <span class="font-weight-bold text-info" 
+                      id="current-rows"></span>
+                  <button type="button"
+                      onclick="firstPage()"
+                      class="btn btn-info btn-default" 
+                      title="PREVIOUS">
+                      <i class="material-icons">
+                      skip_previous
+                      </i>
+                  </button>
+                  <button type="button"
+                      onclick="previousPage()" 
+                      class="btn btn-info btn-default" 
+                      title="BEFORE">
+                      <i class="material-icons">
+                      keyboard_arrow_left
+                      </i>
+                  </button>
 
-									<input type="text" 
-											id="pagination-display" 
-											value="0000 / 0000" 
-											disabled>
+                  <input type="text" 
+                      id="pagination-display" 
+                      value="0000 / 0000" 
+                      disabled>
 
-									<button type="button"
-											onclick="nextPage()"
-											class="btn btn-info btn-default" 
-											title="NEXT">
-											<i class="material-icons">
-											keyboard_arrow_right
-											</i>
-									</button>
-									<button type="button" 
-											onclick="lastPage()"
-											class="btn btn-info btn-default" 
-											title="LAST">
-											<i class="material-icons">
-											skip_next
-											</i>
-									</button>
+                  <button type="button"
+                      onclick="nextPage()"
+                      class="btn btn-info btn-default" 
+                      title="NEXT">
+                      <i class="material-icons">
+                      keyboard_arrow_right
+                      </i>
+                  </button>
+                  <button type="button" 
+                      onclick="lastPage()"
+                      class="btn btn-info btn-default" 
+                      title="LAST">
+                      <i class="material-icons">
+                      skip_next
+                      </i>
+                  </button>
 
-									<span class="font-weight-bold text-info" 
-											id="total-rows"></span>
-								</div>
-							</div>
+                  <span class="font-weight-bold text-info" 
+                      id="total-rows"></span>
+                </div>
+              </div>
 
-						</div>
-												
-				</div>
-				<div class="row report-menu-bottom">
-				</div>
-			</div>
-		<!-- content-wrapper ends -->
+            </div>
+                        
+        </div>
+        <div class="row report-menu-bottom">
+        </div>
+      </div>
+    <!-- content-wrapper ends -->
 
-		<!-- partial:../../partials/_footer.html -->
-		<% include ../../partials/_footer %>
-		<!-- partial -->
-		</div>
-		<!-- main-panel ends -->
-		</div>
-			<!-- page-body-wrapper ends -->
-	</div>
-	<!-- container-scroller -->
+    <!-- partial:../../partials/_footer.html -->
+    <% include ../../partials/_footer %>
+    <!-- partial -->
+    </div>
+    <!-- main-panel ends -->
+    </div>
+      <!-- page-body-wrapper ends -->
+  </div>
+  <!-- container-scroller -->
 
-	<% include ../../partials/_scripts %>
+  <% include ../../partials/_scripts %>
 
-	<script src="app/reports/StockDiary.js"></script>
+  <script src="app/reports/stockdiary.js"></script>
 </body>

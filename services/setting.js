@@ -6,7 +6,6 @@ settingService.validateConn = validateConn;
 settingService.getDBConnList = getDBConnList;
 
 function validateConn(data, cb) {
-console.log('data :', data);
   const pool = mysql.createPool(data);
 
   pool.getConnection((err, conn) => {
