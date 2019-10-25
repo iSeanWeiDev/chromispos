@@ -209,12 +209,13 @@ $(document).ready(function () {
             customEndDate = arrDate[0] + '-' + arrDate[1] + '-' + arrDate[2] + 'T23:59:59.999Z';
             break;
           case 2: // Yesterday
-            var date = (new Date()).setDate((new Date()).getDate() - 1);
-            var isoDate = (new Date(date)).toISOString();
-            var arrDate = isoDate.split('T')[0].split('-');
+            var date2 = (new Date()).setDate((new Date()).getDate() - 1);
+            var isoDate2 = (new Date(date2)).toISOString();
+            var arrDate2 = isoDate2.split('T')[0].split('-');
 
-            customStartDate = arrDate[0] + '-' + arrDate[1] + '-' + arrDate[2] + 'T00:00:00.000Z';
-            customEndDate = arrDate[0] + '-' + arrDate[1] + '-' + arrDate[2] + 'T23:59:59.999Z';
+            customStartDate = arrDate2[0] + '-' + arrDate2[1] + '-' + arrDate2[2] + 'T00:00:00.000Z';
+            customEndDate = arrDate2[0] + '-' + arrDate2[1] + '-' + arrDate2[2] + 'T23:59:59.999Z';
+            break;
           case 3: // Last 7 Days
             var date7 = (new Date()).setDate((new Date()).getDate() - 7);
             var isoDate7 = (new Date(date7)).toISOString();
@@ -274,6 +275,7 @@ $(document).ready(function () {
         }
       }
 
+      console.log(sendData);
       if (getObjectSize(sendData) > 0) {
         EasyLoading.show();
         var method = "GET";
@@ -307,6 +309,16 @@ $(document).ready(function () {
           }
         });
       }
+    } else {
+      mkNoti(
+        'Warning!',
+        'Please choose the database',
+        {
+            status:'warning'
+        }
+      );
+      
+      $('select#select-db-host').focus();
     }
   }
 

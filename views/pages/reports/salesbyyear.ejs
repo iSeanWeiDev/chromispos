@@ -1,1 +1,137 @@
-salesbyyears
+<body data-gr-c-s-loaded="true">
+		<div class="container-scroller">
+				<!-- partial:../../partials/_navbar.html -->
+				<% include ../../partials/_navbar %>
+				<!-- partial -->
+
+				<div class="container-fluid page-body-wrapper">
+
+				<!-- partial:../../partials/_sidebar.html -->
+				<% include ../../partials/_sidebar %>
+				<!-- partial -->
+						<div class="main-panel">
+								<div class="content-wrapper"> 
+										<div class="row report-menu">
+												<div class="report-menu-category1 text-center">
+														<h6 class="text-white font-weight-bold">
+																Choose the database
+														</h6>
+														<div class="form-group">
+																<select class="custom-select" name="" id="select-db-host">
+																		<option selected>Select one</option>
+																<% for(var obj of data) { %>
+																		<option value="<%= JSON.stringify(obj) %>">
+																				<%= obj.hostName %>
+																		</option>
+																<% } %>
+																</select>
+														</div>
+
+														<div class="form-group">
+																<input type="text"
+																		class="report-show-database-name"
+																		disabled>
+																<input type="text" id="database-index" hidden>
+														</div>
+
+														<div class="form-group">
+																<select class="custom-select" name="" id="select-category">
+																		<option value="0" selected>
+																				All Categories
+																		</option>
+																</select>
+														</div>
+												</div>
+
+												<div class="report-menu-category2">
+														<div class="form-group">
+																<select class="custom-select" name="" id="date-range">
+																		<option value="0" selected>
+																				Select one
+																		</option>
+																		<option value="1"> Every Year </option>
+																</select>
+														</div>
+
+														<div class="form-group pl-2">
+																<button type="button"
+																		onclick="generateReport()" 
+																		class="btn btn-raised btn-info pl-4 pr-4">
+																		<i class="fa fa-edit"></i>
+																		Generate
+																</button>
+														</div>
+												</div>
+										</div>
+
+										<div class="report-body pl-5 pr-5 pt-4 pb-4">
+												<div class="row report-body-title">
+														<div class="report-body-title-left">
+																<h2 class="text-info font-weight-bold">
+																		Sales By Year
+																</h2>
+														</div>
+
+														<div class="report-body-title-right">
+																<button type="button"
+																		onclick="downloadCSV()" 
+																		class="btn btn-outline-success">
+																		<i class="fa fa-print pr-2"></i>
+																		print
+																</button>
+
+																<%
+																let current_datetime = new Date();
+																let formatted_date = current_datetime.getFullYear() + "/" + (current_datetime.getMonth() + 1) + "/" + current_datetime.getDate() + " " + current_datetime.getHours() + ":" + current_datetime.getMinutes() + ":" + current_datetime.getSeconds() ;
+																%>
+																<p><%= formatted_date %></p>
+														</div>
+												</div>
+												<div class="erport-body-content">
+														<span class="text-dark font-weight-bold p-0">
+																<strong>
+																Period
+																</strong>
+														</span>
+														<hr class="p-0 m-0 text-info" style="border-top: 3px solid #03a9f4!important;">
+														
+														<table class="table table-hover" id="report-table">
+																<thead>
+																		<tr>
+																				<th class="text-dark font-weight-bold p-1">Date</th>
+																				<th class="text-dark font-weight-bold p-1">Items Sold</th>
+																				<th class="text-dark font-weight-bold p-1">Largest Order</th>
+																				<th class="text-dark font-weight-bold p-1">Total Sales</th>
+																				<th class="text-dark font-weight-bold p-1">Total Tax</th>
+																				<th class="text-dark font-weight-bold p-1">Grand Total</th>
+																		</tr>
+																</thead>
+																<tbody id="display-report">
+																		<!-- Add body contnet -->
+																</tbody>
+																<tfoot>
+																		<!-- Add footer content -->
+																</tfoot>
+														</table>
+												</div>
+										</div>
+										<div class="row report-menu-bottom">
+
+										</div>
+								</div>
+						<!-- content-wrapper ends -->
+
+						<!-- partial:../../partials/_footer.html -->
+						<% include ../../partials/_footer %>
+						<!-- partial -->
+						</div>
+				<!-- main-panel ends -->
+				</div>
+				<!-- page-body-wrapper ends -->
+		</div>
+		<!-- container-scroller -->
+
+		<% include ../../partials/_scripts %>
+
+		<script src="app/reports/salesbyyear.js"></script>
+</body>
