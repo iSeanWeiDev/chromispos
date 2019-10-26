@@ -7,6 +7,10 @@ var getList = {
                 ID, SUPPLIERNAME
               FROM
                 suppliers`,
+  peoples: `SELECT
+              ID, NAME
+            FROM
+              PEOPLE`,
 }
 
 module.exports = getList;

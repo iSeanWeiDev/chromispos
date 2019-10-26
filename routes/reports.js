@@ -8,9 +8,11 @@ var salesByDayController = require('../controllers/reports/salesByDayController'
 var salesByMonthController = require('../controllers/reports/salesByMonthController');
 var salesByYearController = require('../controllers/reports/salesByYearController');
 var categorySalesController = require('../controllers/reports/categorySalesController');
+var timeClockController = require('../controllers/reports/timeClockController');
 
 router.get('/inventory', inventoryController.getData);
 router.get('/categories', getListContorller.getCategoryList);
+router.get('/peoples', getListContorller.getPeopleList);
 router.get('/suppliers', getListContorller.getSupplierList);
 router.get('/inventory/items/history', inventoryController.getItemSoldHistory);
 router.get('/productsales', productSalesController.getData);
@@ -20,5 +22,6 @@ router.get('/salesbyday', salesByDayController.getData);
 router.get('/salesbymonth', salesByMonthController.getData);
 router.get('/salesbyyear', salesByYearController.getData);
 router.get('/categoysales', categorySalesController.getData);
+router.get('/timeclock', timeClockController.getData);
 
 module.exports = router;
