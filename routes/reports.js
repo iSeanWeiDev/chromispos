@@ -7,6 +7,7 @@ var stockDiaryController = require('../controllers/reports/stockDiaryController'
 var salesByDayController = require('../controllers/reports/salesByDayController');
 var salesByMonthController = require('../controllers/reports/salesByMonthController');
 var salesByYearController = require('../controllers/reports/salesByYearController');
+var categorySalesController = require('../controllers/reports/categorySalesController');
 
 router.get('/inventory', inventoryController.getData);
 router.get('/categories', getListContorller.getCategoryList);
@@ -18,5 +19,6 @@ router.post('/stockdiary', stockDiaryController.updateData);
 router.get('/salesbyday', salesByDayController.getData);
 router.get('/salesbymonth', salesByMonthController.getData);
 router.get('/salesbyyear', salesByYearController.getData);
+router.get('/categoysales', categorySalesController.getData);
 
 module.exports = router;

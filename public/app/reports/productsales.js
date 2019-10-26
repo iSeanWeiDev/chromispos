@@ -275,7 +275,6 @@ $(document).ready(function () {
         }
       }
 
-      console.log(sendData);
       if (getObjectSize(sendData) > 0) {
         EasyLoading.show();
         var method = "GET";
