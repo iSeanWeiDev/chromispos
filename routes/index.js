@@ -53,7 +53,14 @@ router.get('/home', isAuthenticated, function(req, res) {
   })
 });
 
-router.get('/settings', isAuthenticated, (req, res) => {
+router.get('/dashboard', isAuthenticated, isAdmin, (req, res) => {
+  res.render('pages/admin/dashboard', {
+    user: req.session.user,
+    isAuthenticated: true,
+  });
+});
+
+router.get('/settings', isAuthenticated, isAdmin, (req, res) => {
   settingService.getDBConnList(cb => {
     res.render('pages/admin/setting', {
       data: cb,
@@ -79,6 +86,14 @@ function isAuthenticated(req, res, next) {
   }
 
   return res.redirect('/');
+}
+
+function isAdmin(req, res, next) {
+  if(req.session.user.role == "admin") {
+    return next();
+  }
+
+  return res.redirect('/home');
 }
 
 module.exports = router;

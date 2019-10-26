@@ -393,3 +393,52 @@ select {
 .modal-right .modal-content {
   min-height: 100vh;
 }
+
+/* Sidbar style */
+.sidebar {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0; /* Behind the navbar */
+  padding: 0;
+  width: 280px !important;
+  background-color: rgba(25, 118, 210, 0.95) !important;
+  /* background-color: rgba(25, 118, 210, 0.95) !important; */
+  -webkit-box-shadow: 5px 0 5px -2px #888;
+      box-shadow: 5px 0 5px -2px #888;
+}
+
+.sidebar-sticky {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 48px; /* Height of navbar */
+  height: calc(100vh - 48px);
+  padding-top: .5rem;
+  overflow-x: hidden;
+  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+}
+
+.sidebar .nav-link {
+  font-weight: 500;
+  color: #333;
+}
+
+.sidebar .nav-link .feather {
+  margin-right: 4px;
+  color: #999;
+}
+
+.sidebar .nav-link.active {
+  color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+  color: inherit;
+}
+
+.sidebar-heading {
+  font-size: .75rem;
+  text-transform: uppercase;
+}
