@@ -60,6 +60,20 @@ router.get('/dashboard', isAuthenticated, isAdmin, (req, res) => {
   });
 });
 
+router.get('/users', isAuthenticated, isAdmin, (req, res) => {
+  res.render('pages/admin/users', {
+    user: req.session.user,
+    isAuthenticated: true,
+  })
+});
+
+router.get('/reports', isAuthenticated, isAdmin, (req, res) => {
+  res.render('pages/admin/reports', {
+    user: req.session.user,
+    isAuthenticated: true,
+  })
+})
+
 router.get('/settings', isAuthenticated, isAdmin, (req, res) => {
   settingService.getDBConnList(cb => {
     res.render('pages/admin/setting', {

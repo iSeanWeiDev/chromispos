@@ -44,22 +44,6 @@
               <%= user.userName %>
           </a>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="lr1">
-          <% if (user.role == "admin") { %>
-            <a class="dropdown-item p-2" href="/settings">
-              <i class="material-icons pr-1">
-                  settings
-              </i> 
-              DB config
-            </a>
-
-            <a class="dropdown-item p-2" href="/reports">
-              <i class="material-icons pr-1">
-                find_in_page
-              </i> 
-              Reports 
-            </a>
-          <% } %>
-            
             <a class="dropdown-item p-2" href="/profile">
                 <i class="material-icons pr-1">
                     person
