@@ -10,7 +10,7 @@
       <!-- End import page sidebar -->
 
       <main role="main" class="ml-sm-auto pt-3 px-4" style="width: calc(100% - 280px);">
-        <div class="col-md-6 offset-xl-3">
+        <div class="col-md-8 offset-xl-2">
           <div class="card db-setting">
               <div class="card-header">
                   <button type="button" class="btn btn-danger bmd-btn-icon">
@@ -90,7 +90,8 @@
                   <div id="accordion">
                   
                   <%  var index = 0;
-                      for(var obj of data) {  index++; %>
+                      for(var obj of data) {  
+                        index++; %>
                       <div class="card mb-1"  id="headingOne-<%= obj.id %>">
                           <div class="card-header">
                               <div class="mb-0">
@@ -116,6 +117,11 @@
                                       aria-controls="collapseOne">
                                       view
                                   </a>
+                                  <div class="switch float-right">
+                                    <label>
+                                        <input type="checkbox"> 
+                                    </label>
+                                 </div>
                               </div>
                               
                           </div>
@@ -135,7 +141,6 @@
                                               <input type="text" class="form-control" value="<%= obj.detail %>">
                                           </div>
                                       </div>
-
                                       <div class="col-md-2 pt-3">
                                           <button type="button"
                                               onclick="editReport(<%= obj.id %>)" 

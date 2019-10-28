@@ -1,9 +1,11 @@
 var DbModel = require('../models').db;
 var ReportModel = require('../models').Report;
+var UserModel = require('../models').User;
 
 var sqliteService = {};
 sqliteService.getDbInfoByName = getDbInfoByName;
 sqliteService.getReportList = getReportList;
+sqliteService.getUserList = getUserList;
 
 function getDbInfoByName(name, cb) {
   DbModel.findOne({
@@ -67,6 +69,21 @@ function getReportList(status, cb) {
         console.log(err);
       });
   }
+}
+
+function getUserList(cb) {
+  UserModel.findAll()
+    .then(result => {
+      var arrUser = [];
+      result.forEach(item => {
+        arrUser.push(item.get());
+      });
+
+      cb(arrUser);
+    })
+    .catch(error => {
+      console.log(error);
+    });
 }
 
 module.exports = sqliteService;

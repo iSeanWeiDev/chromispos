@@ -10,7 +10,164 @@
       <!-- End import page sidebar -->
 
       <main role="main" class="ml-sm-auto pt-3 px-4" style="width: calc(100% - 280px);">
-        
+        <div class="col-md-8 offset-xl-2">
+          <div class="card db-setting">
+              <div class="card-header">
+                  <button type="button" class="btn btn-danger bmd-btn-icon">
+                      <i class="material-icons">more_vert</i>
+                  </button>
+                  
+                  <span class="text-info font-weight-bold text-uppercase" style="font-size: 20px;">
+                      All Users
+                  </span>
+
+                  <button type="button" 
+                      class="btn btn-danger bmd-btn-fab btn-add"
+                      data-toggle="modal" 
+                      data-target="#addModal">
+                      <i class="material-icons">add</i>
+                  </button>
+
+                  <!-- Modal -->
+                  <div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                          <div class="modal-content">
+                              <form method="POST"
+                                  action="/admin/reports"
+                                  id="report">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title">Create user</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                      </button>
+                                  </div>
+                                  <div class="modal-body">
+                                      <div class="container-fluid">
+
+                                          <div class="form-group">
+                                              <label for="" class="p-1">
+                                                  User Name :
+                                              </label>
+                                              <input type="text" 
+                                                  id="report-name"
+                                                  class="input-add-db-connection"
+                                                  placeholder="ex: panamacheng"
+                                                  autofocus
+                                                  required>
+                                          </div>
+
+                                          <div class="form-group">
+                                              <label for="" class="p-1">
+                                                  email :
+                                              </label>
+                                              <input type="email" 
+                                                  id="report-detail"
+                                                  class="input-add-db-connection"
+                                                  placeholder="ex: example@post.com"
+                                                  required>
+                                          </div>
+
+                                          <div class="form-group">
+                                            <label for="" class="p-1">
+                                                Password :
+                                            </label>
+                                            <input type="password" 
+                                                id="report-detail"
+                                                class="input-add-db-connection"
+                                                placeholder="ex: example password"
+                                                required>
+                                        </div>
+                                      </div>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" 
+                                          class="btn btn-secondary" 
+                                          data-dismiss="modal">
+                                          Close
+                                      </button>
+
+                                      <button type="submit" 
+                                          class="btn btn-primary">
+                                          Save
+                                      </button>
+                                  </div>
+                              </div>
+                          </form>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="card-body bg-light p-5">
+                  <div id="accordion">
+                  
+                  <% for(var obj of data) {  %>
+                      <div class="card mb-1"  id="headingOne-<%= obj.id %>">
+                          <div class="card-header">
+                              <div class="mb-0">
+                                  <button class="btn btn-link" style="text-decoration: none;">
+                                      <b>
+                                        <%= obj.role %> : 
+                                      </b>
+                                      <strong class="text-info">
+                                          <%= obj.userName %>
+                                      </strong>
+                                  </button>
+                                  <a href="#"
+                                      onclick="deleteReport(<%= obj.id %>)"
+                                      class="float-right btn btn-danger">
+                                      delete
+                                  </a>
+                                  <a href="#" 
+                                      id="view-connection"
+                                      class="float-right btn btn-info pr-2"
+                                      data-toggle="collapse" 
+                                      data-target="#collapse-<%=obj.id%>" 
+                                      aria-expanded="true" 
+                                      aria-controls="collapseOne">
+                                      view
+                                  </a>
+                                  <div class="switch float-right">
+                                    <label>
+                                        <input type="checkbox"> 
+                                    </label>
+                                 </div>
+                              </div>
+                              
+                          </div>
+                      
+                          <div id="collapse-<%=obj.id%>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
+                              <div class="card-body">
+                                  <div class="row">
+                                      <div class="col-md-4">
+                                          <div class="form-group">
+                                              <label for="">User name: </label>
+                                              <input type="text" class="form-control" value="<%= obj.userName %>">
+                                          </div>
+                                      </div>
+                                      <div class="col-md-4">
+                                          <div class="form-group">
+                                              <label for="">Email Address: </label>
+                                              <input type="text" class="form-control" value="<%= obj.email %>">
+                                          </div>
+                                      </div>
+                                      <div class="col-md-4 pt-3">
+                                          <button type="button"
+                                              onclick="editReport(<%= obj.id %>)" 
+                                              class="btn btn-outline-success btn-sm">
+                                              <i class="fa fa-edit"></i>
+                                              Change password
+                                          </button>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  <% } %>
+                      
+                  </div>
+              </div>
+          </div>
+        </div>
       </main>
   </div>
 
