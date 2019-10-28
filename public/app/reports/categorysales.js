@@ -8,17 +8,6 @@ $(document).ready(function () {
 
   var gDBConn;
 
-  function returnData(method, url, sendData, callback ) {
-    $.ajax({
-      type: method,
-      url: url,
-      data: sendData,
-      dataType: "JSON",
-    }).done(response => {
-      callback(response);
-    });
-  }
-
   $('input#report-start-date').datetimepicker({
     format:'Y.m.d H:i',
     lang:'en'
@@ -140,7 +129,7 @@ $(document).ready(function () {
         sendData = {
           startDate: new Date(customStartDate).toISOString(),
           endDate: customEndDate,
-          hostName: hostName
+          hostName: hostName,
         }
       }
 

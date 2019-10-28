@@ -68,10 +68,13 @@ router.get('/users', isAuthenticated, isAdmin, (req, res) => {
 });
 
 router.get('/reports', isAuthenticated, isAdmin, (req, res) => {
-  res.render('pages/admin/reports', {
-    user: req.session.user,
-    isAuthenticated: true,
-  })
+  sqliteService.getReportList('admin', cb => {
+    res.render('pages/admin/reports', {
+      user: req.session.user,
+      isAuthenticated: true,
+      data: cb,
+    });
+  });
 })
 
 router.get('/settings', isAuthenticated, isAdmin, (req, res) => {

@@ -13,17 +13,6 @@ $(document).ready(function () {
   var rowCount = 20;
   var crrPage = 1;
 
-  function returnData(method, url, sendData, callback ) {
-    $.ajax({
-      type: method,
-      url: url,
-      data: sendData,
-      dataType: "JSON",
-    }).done(response => {
-      callback(response);
-    });
-  }
-
   function returnRowHTML(data) {
     var strHTML = `<tr>
                     <td scope="row" 

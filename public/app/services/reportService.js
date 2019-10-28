@@ -2,6 +2,26 @@
 
 /**
  * @description
+ * Send Ajax request by defined method
+ * 
+ * @param {string} method 
+ * @param {string} url 
+ * @param {object} sendData 
+ * @param {object} callback 
+ */
+function returnData(method, url, sendData, callback ) {
+  $.ajax({
+    type: method,
+    url: url,
+    data: sendData,
+    dataType: "JSON",
+  }).done(response => {
+    callback(response);
+  });
+}
+
+/**
+ * @description
  * Get object size from validated object.
  * 
  * @param {OBJECT} obj 

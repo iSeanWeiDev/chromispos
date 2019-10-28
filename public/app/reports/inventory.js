@@ -13,17 +13,6 @@ $(document).ready(function () {
     scrollable: false
   });
 
-  function returnData(method, url, sendData, callback ) {
-    $.ajax({
-      type: method,
-      url: url,
-      data: sendData,
-      dataType: "JSON",
-    }).done(response => {
-      callback(response);
-    });
-  }
-
   function returnRowHTML(data) {
     var strRowHTML = `<tr>
                         <td scope="row" style="width: 10%;">

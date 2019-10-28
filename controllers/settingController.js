@@ -11,12 +11,9 @@ var settingController = {
       connectionLimit: 10,
     }
     settingService.validateConn(data, cb => {
-      console.log('cb :', cb);
-
       if (cb == true) {
         DbModel.create(req.body)
           .then(result => {
-            console.log(result.get());
             res.send({
               flag:true,
               message: 'Created the connection'

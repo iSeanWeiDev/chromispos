@@ -6,17 +6,6 @@ $(document).ready(function () {
     scrollable: false
   });
 
-  function returnData(method, url, sendData, callback ) {
-    $.ajax({
-      type: method,
-      url: url,
-      data: sendData,
-      dataType: "JSON",
-    }).done(response => {
-      callback(response);
-    });
-  }
-
   function returnHTML(data) {
     var newDateFormat = data.DATENEW.split('-')[1] + '-' + data.DATENEW.split('-')[0];
 

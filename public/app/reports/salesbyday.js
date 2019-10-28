@@ -29,17 +29,6 @@ $(document).ready(function () {
         return strHTML;
     }
 
-    function returnData(method, url, sendData, callback ) {
-      $.ajax({
-        type: method,
-        url: url,
-        data: sendData,
-        dataType: "JSON",
-      }).done(response => {
-        callback(response);
-      });
-    }
-
   // Setting database connection
     $('select#select-db-host').change(function (e) {
       var data = JSON.parse(this.value);

@@ -30,8 +30,6 @@ var salesByDayController = {
         port: dbInfo.port,
       });
 
-      console.log(query, params);
-
       dbConn.query(query, params, (error, result) => {
         if (error) {
           dbConn.end();

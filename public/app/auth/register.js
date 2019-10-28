@@ -20,14 +20,12 @@ $(document).ready(function () {
             password: $('input#signup-password').val()
         }
     
-        console.log(sendData);
         $.ajax({
           type: "POST",
           url: "/auth/register",
           data: sendData,
           dataType: "JSON"
         }).done(function(response) {
-          console.log('response', response)
           if(response && response.flag == true) {
             mkNoti(
               '<h4 class="text-success">Success!</h4>',

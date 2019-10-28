@@ -188,17 +188,6 @@ $(document).ready(function () {
     }
   }
 
-  function returnData(method, url, sendData, callback ) {
-    $.ajax({
-      type: method,
-      url: url,
-      data: sendData,
-      dataType: "JSON",
-    }).done(response => {
-      callback(response);
-    });
-  }
-
   function init() {
     EasyLoading.show();
     var method = "GET";
