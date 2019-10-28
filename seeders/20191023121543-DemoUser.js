@@ -12,14 +12,24 @@ module.exports = {
         isBetaMember: false
       }], {});
     */
-    return queryInterface.bulkInsert('Users', [{
-      userName: 'panamacheng',
-      email: 'rango941001@gmail.com',
-      password: '$2a$10$xkdYJ3O0bXX2jMhAvK66P.xq7Ow95BPFK2bb0D5a2jMhByCIhZ8..',
-      role: 'admin',
-      createdAt: new Date(),
-      updatedAt: new Date()
-    }], {});
+    return queryInterface.bulkInsert('Users', [
+      {
+        userName: 'Steve Peters',
+        email: 'admin@chromispos.com',
+        password: '$2a$10$phblJQzrpY8oUVR0ldX5FOVIsvP082m6hwHQfcEGFGpdAj3wvnDQe',
+        role: 'admin',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        userName: 'Employeers',
+        email: 'employee@chromispos.com',
+        password: '$2a$10$pIDutHrn0lp08K8iq7x3j.AslEOjXlr41jqdd2yrhLvxNnwYoh0DW',
+        role: 'user',
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    ], {});
   },
 
   down: (queryInterface, Sequelize) => {
