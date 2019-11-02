@@ -71,4 +71,26 @@ $(document).ready(function () {
       }
     }); 
   }
+  this.showUser = function(id) {
+    var method = "PUT";
+    var url = "/admin/reports";
+    var sendData = {
+      id: id
+    }
+
+    returnData(method, url, sendData, callback => {
+      if (calllback && callback.flag == true) {
+        mkNoti(
+          'Success!',
+          'Set the report for users',
+          {
+            status:'success'
+          }
+        );
+      }
+    });
+  }
+  this.editReport = function(id) {
+    
+  }
 });

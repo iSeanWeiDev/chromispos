@@ -49,7 +49,7 @@
                                                   User Name :
                                               </label>
                                               <input type="text" 
-                                                  id="report-name"
+                                                  id="userName"
                                                   class="input-add-db-connection"
                                                   placeholder="ex: panamacheng"
                                                   autofocus
@@ -61,7 +61,7 @@
                                                   email :
                                               </label>
                                               <input type="email" 
-                                                  id="report-detail"
+                                                  id="email"
                                                   class="input-add-db-connection"
                                                   placeholder="ex: example@post.com"
                                                   required>
@@ -72,7 +72,7 @@
                                                 Password :
                                             </label>
                                             <input type="password" 
-                                                id="report-detail"
+                                                id="password"
                                                 class="input-add-db-connection"
                                                 placeholder="ex: example password"
                                                 required>
@@ -152,11 +152,67 @@
                                       </div>
                                       <div class="col-md-4 pt-3">
                                           <button type="button"
-                                              onclick="editReport(<%= obj.id %>)" 
-                                              class="btn btn-outline-success btn-sm">
+                                              class="btn btn-outline-success btn-sm"
+                                              data-toggle="modal" 
+                                              data-target="#changePaswordModal<%= obj.id %>">
                                               <i class="fa fa-edit"></i>
                                               Change password
                                           </button>
+                                          <!-- Modal -->
+                                        <div class="modal fade" 
+                                          id="changePaswordModal<%= obj.id %>" 
+                                          tabindex="-1" 
+                                          role="dialog" 
+                                          aria-labelledby="changePaswordModalTitle<%= obj.id %>" 
+                                          aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h5 class="modal-title" id="changePaswordModalTitle<%= obj.id %>">
+                                                    Change Password
+                                                  </h5>
+                                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                  </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="form-group">
+                                                        <label for="cpassword<%= obj.id %>" class="p-1">
+                                                            Password :
+                                                        </label>
+                                                        <input type="text" 
+                                                            id="cpassword<%= obj.id %>"
+                                                            class="input-add-db-connection"
+                                                            autofocus
+                                                            required>
+                                                    </div>
+          
+                                                    <div class="form-group">
+                                                        <label for="crpassword<%= obj.id %>" class="p-1">
+                                                            Confirm password :
+                                                        </label>
+                                                        <input type="text" 
+                                                            id="crpassword<%= obj.id %>"
+                                                            class="input-add-db-connection"
+                                                            required>
+                                                    </div>
+                                                </div>
+                                                <div class="modal-footer">
+                                                  <button type="button" 
+                                                    class="btn btn-secondary" 
+                                                    data-dismiss="modal">
+                                                    Close
+                                                  </button>
+                                                  <button 
+                                                    type="button" 
+                                                    class="btn btn-primary"
+                                                    onclick="changePassword(<%= obj.id %>)" >
+                                                    Change
+                                                  </button>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
                                       </div>
                                   </div>
                               </div>

@@ -88,9 +88,9 @@
 
               <div class="card-body bg-light p-5">
                   <div id="accordion">
-                  
                   <%  var index = 0;
                       for(var obj of data) {  
+                        var checked = obj.isUser == true ? "checked" : "";
                         index++; %>
                       <div class="card mb-1"  id="headingOne-<%= obj.id %>">
                           <div class="card-header">
@@ -117,9 +117,12 @@
                                       aria-controls="collapseOne">
                                       view
                                   </a>
-                                  <div class="switch float-right">
+                                  <div class="checkbox float-right pt-1">
                                     <label>
-                                        <input type="checkbox"> 
+                                        <input 
+                                            type="checkbox"
+                                            onclick="showUser(<%= obj.id %>)"  
+                                            <%= checked %>>
                                     </label>
                                  </div>
                               </div>
@@ -129,25 +132,17 @@
                           <div id="collapse-<%=obj.id%>" class="collapse" aria-labelledby="headingOne" data-parent="#accordion">
                               <div class="card-body">
                                   <div class="row">
-                                      <div class="col-md-5">
+                                      <div class="col-md-6">
                                           <div class="form-group">
                                               <label for="">Report name: </label>
                                               <input type="text" class="form-control" value="<%= obj.name %>">
                                           </div>
                                       </div>
-                                      <div class="col-md-5">
+                                      <div class="col-md-6">
                                           <div class="form-group">
                                               <label for="">Report detail: </label>
                                               <input type="text" class="form-control" value="<%= obj.detail %>">
                                           </div>
-                                      </div>
-                                      <div class="col-md-2 pt-3">
-                                          <button type="button"
-                                              onclick="editReport(<%= obj.id %>)" 
-                                              class="btn btn-outline-success btn-sm">
-                                              <i class="fa fa-edit"></i>
-                                              edit
-                                          </button>
                                       </div>
                                   </div>
                               </div>
@@ -170,6 +165,8 @@
   <!-- Begin import jabascript libs -->
   <% include ../../partials/_scripts %>
   <!-- End import jabascript libs -->
+  <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
+
   <script src="app/admin/reports.js"></script>
 </body>
   
