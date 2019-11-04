@@ -102,7 +102,7 @@ $(document).ready(function () {
       var url = "/reports/stockdiary";
       returnData(method, url, sendData, callback => {
         EasyLoading.hide();
-        if(callback && callback.falg == true) {
+        if(callback && callback.flag == true) {
           $('button#btn-save-row-'+productID+'-'+categoryID).css("display", "none");
           $('button#btn-cancel-row-'+productID+'-'+categoryID).css("display", "none");
           $('button#btn-edit-row-'+productID+'-'+categoryID).css("display", "inline-block");
@@ -173,7 +173,6 @@ $(document).ready(function () {
               }
             }
           }
-
           $(`tr#tr-row-${productID}-${categoryID}`).children().children()
               .css("color", "green")
               .css("font-weight", "bold");
