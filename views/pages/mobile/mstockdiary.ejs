@@ -1,0 +1,80 @@
+<body data-gr-c-s-loaded="true">
+  <div class="container-scroller">
+    <!-- partial:../../partials/_navbar.html -->
+    <% include ../../partials/_navbar %>
+    <style>
+      .container-scroller {
+        background-color: #f3f3f3f3 !important;
+      }
+      .searchBar {
+        margin-top: 10px;
+      }
+      .searchInput {
+        height: 45px;
+        width: 290px;
+        border-radius: 10px;
+        padding: 2px 5px 2px 10px;
+        color:mediumblue;
+        font-weight: bold;
+        font-size: 20px;
+        outline: none;
+        border-color: mintcream;
+      }
+      .searchButton {
+        margin-left: 10px;
+        width: 60px;
+        height: 60px;
+        border-radius: 30px;
+        cursor: pointer;
+        color: white;
+        font-size: 22px;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, .4);
+        background: #2196F3;
+        border-color: mintcream;
+      }
+      .card-body {
+        height: calc(100vh - 200px);
+      }
+      .input-group {
+        margin-bottom: 3px;
+      }
+      .reference {
+        font-weight: bold;
+        font-size: 18px;
+      }
+    </style>
+    <!-- partial -->
+    <div class="container-fluid page-body-wrapper">
+      <!-- partial -->
+      <div class="main-panel">
+        <div class="content-wrapper">  
+          <div class="searchBar p-2">
+            <input 
+              type="text" 
+              id="searchInput"
+              class="searchInput"
+              placeholder=""
+              autofocus>
+            <button 
+              class="searchButton"
+              onclick="searchData()">
+              <i class="fa fa-play"></i>
+            </button>
+          </div>
+          <div class="contents pt-1">
+            <div class="card">
+              <div class="card-body">
+                
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- partial:../../partials/_footer.html -->
+    <% include ../../partials/_footer %>
+    <!-- partial -->
+  </div>
+  <% include ../../partials/_scripts %>
+  <script src="app/mobile/mStockDiary.js"></script>
+</body>

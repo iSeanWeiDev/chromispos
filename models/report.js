@@ -3,6 +3,7 @@ module.exports = (sequelize, DataTypes) => {
   const Report = sequelize.define('Report', {
     name: DataTypes.STRING,
     detail: DataTypes.STRING,
+    type: DataTypes.STRING,
     isAdmin: DataTypes.BOOLEAN,
     isUser: DataTypes.BOOLEAN,
   }, {});

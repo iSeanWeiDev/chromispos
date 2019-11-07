@@ -14,6 +14,9 @@ module.exports = {
       detail: {
         type: Sequelize.STRING
       },
+      type: {
+        type: Sequelize.STRING,
+      },
       isAdmin: {
         type: Sequelize.BOOLEAN
       },

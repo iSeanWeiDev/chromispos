@@ -92,11 +92,19 @@ router.get('/settings', isAuthenticated, isAdmin, (req, res) => {
 
 router.get('/:reportname', isAuthenticated, (req, res) => {
   settingService.getDBConnList(cb => {
-    res.render('pages/reports/'+req.params.reportname, {
-      user: req.session.user,
-      isAuthenticated: true,
-      data: cb,
-    });
+    if(req.params.reportname[0] == 'm') {
+      res.render('pages/mobile/'+req.params.reportname, {
+        user: req.session.user,
+        isAuthenticated: true,
+        data: cb,
+      });
+    } else {
+      res.render('pages/reports/'+req.params.reportname, {
+        user: req.session.user,
+        isAuthenticated: true,
+        data: cb,
+      });
+    }
   });
 });
 

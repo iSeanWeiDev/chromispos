@@ -17,6 +17,7 @@ module.exports = {
       {
         name: 'salesbyday',
         detail: 'Sales by day',
+        type: 'desktop',
         isAdmin: true,
         isUser: false,
         createdAt: new Date(),
@@ -25,6 +26,7 @@ module.exports = {
       {
         name: 'salesbymonth',
         detail: 'Sales by month',
+        type: 'desktop',
         isAdmin: true,
         isUser: false,
         createdAt: new Date(),
@@ -33,6 +35,7 @@ module.exports = {
       {
         name: 'salesbyyear',
         detail: 'Sales by year',
+        type: 'desktop',
         isAdmin: true,
         isUser: false,
         createdAt: new Date(),
@@ -41,6 +44,7 @@ module.exports = {
       {
         name: 'categorysales',
         detail: 'Category Sales',
+        type: 'desktop',
         isAdmin: true,
         isUser: false,
         createdAt: new Date(),
@@ -49,6 +53,7 @@ module.exports = {
       {
         name: 'inventory',
         detail: 'Inventory',
+        type: 'desktop',
         isAdmin: true,
         isUser: false,
         createdAt: new Date(),
@@ -57,6 +62,7 @@ module.exports = {
       {
         name: 'timeclock',
         detail: 'Time Clock',
+        type: 'desktop',
         isAdmin: true,
         isUser: false,
         createdAt: new Date(),
@@ -65,6 +71,7 @@ module.exports = {
       {
         name: 'stockdiary',
         detail: 'Stock Diary',
+        type: 'desktop',
         isAdmin: true,
         isUser: true,
         createdAt: new Date(),
@@ -73,6 +80,16 @@ module.exports = {
       {
         name: 'productsales',
         detail: 'Product Sales',
+        type: 'desktop',
+        isAdmin: true,
+        isUser: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: 'mstockdiary',
+        detail: 'Stock Diary',
+        type: 'mobile',
         isAdmin: true,
         isUser: false,
         createdAt: new Date(),

@@ -8,7 +8,7 @@
       <main class="main-pannel">
         <div class="row">
         <% for(var obj of data) { %>
-          <div class="col-md-2 mb-3" 
+          <div class="col-md-2 mb-3 <%= obj.type %>" 
             onclick="goReport(<%= obj.id %>, '<%= obj.name %>', <%= isAuthenticated %>)">
             <div class="card text-white card-report">
                 <img class="card-img-top" src="assets/images/report.jpeg" alt="">
@@ -34,6 +34,10 @@
   <% include ../partials/_scripts %>
   <script src="app/home.js"></script>
   <script>
-    console.log(screen.width, screen.height);
+    if(screen.width < 840) {
+      $('div.desktop').css('display', 'none');
+    } else {
+      $('div.mobile').css('display', 'none');
+    }
   </script>
 </body>
