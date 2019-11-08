@@ -20,13 +20,7 @@ $(document).ready(function () {
                         ${data.REFERENCE}
                     </span>
                     <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span 
-                          class="input-group-text font-weight-bold" 
-                          id="inputGroup-sizing-default">
-                          Name : &nbsp;
-                        </span>
-                      </div>
+                      
                       <input 
                         type="text"
                         id="productName"
@@ -35,53 +29,61 @@ $(document).ready(function () {
                         aria-label="Default" 
                         aria-describedby="inputGroup-sizing-default">
                     </div>
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span 
-                          class="input-group-text font-weight-bold" 
-                          id="inputGroup-sizing-default">
-                          Price : &nbsp;
-                        </span>
+                    <div class="row">
+                      <div class="col-4">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span 
+                              class="input-group-text font-weight-bold" 
+                              id="inputGroup-sizing-default">
+                              $:&nbsp;
+                            </span>
+                          </div>
+                          <input 
+                            type="number" 
+                            id="price"
+                            value="${formatNumber(data.PRICESELL.toFixed(2))}"
+                            class="form-control" 
+                            aria-label="Default" 
+                            aria-describedby="inputGroup-sizing-default">
+                        </div>
                       </div>
-                      <input 
-                        type="number" 
-                        id="price"
-                        value="${data.PRICESELL}"
-                        class="form-control" 
-                        aria-label="Default" 
-                        aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span 
-                          class="input-group-text font-weight-bold" 
-                          id="inputGroup-sizing-default">
-                          Sales Floor : &nbsp;
-                        </span>
+                      <div class="col-4">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span 
+                              class="input-group-text font-weight-bold" 
+                              id="inputGroup-sizing-default">
+                              SF:&nbsp;
+                            </span>
+                          </div>
+                          <input 
+                            type="number" 
+                            id="qtySale"
+                            value="${qtySale}"
+                            class="form-control" 
+                            aria-label="Default" 
+                            aria-describedby="inputGroup-sizing-default">
+                        </div>
                       </div>
-                      <input 
-                        type="number" 
-                        id="qtySale"
-                        value="${qtySale}"
-                        class="form-control" 
-                        aria-label="Default" 
-                        aria-describedby="inputGroup-sizing-default">
-                    </div>
-                    <div class="input-group">
-                      <div class="input-group-prepend">
-                        <span 
-                          class="input-group-text font-weight-bold" 
-                          id="inputGroup-sizing-default">
-                          Warehouse : &nbsp;
-                        </span>
+                      <div class="col-4">
+                        <div class="input-group">
+                          <div class="input-group-prepend">
+                            <span 
+                              class="input-group-text font-weight-bold" 
+                              id="inputGroup-sizing-default">
+                              WH: &nbsp;
+                            </span>
+                          </div>
+                          <input 
+                            type="number" 
+                            id="qtyWare"
+                            value="${qtyWare}"
+                            class="form-control" 
+                            aria-label="Default" 
+                            aria-describedby="inputGroup-sizing-default">
+                        </div>
                       </div>
-                      <input 
-                        type="number" 
-                        id="qtyWare"
-                        value="${qtyWare}"
-                        class="form-control" 
-                        aria-label="Default" 
-                        aria-describedby="inputGroup-sizing-default">
                     </div>
                   </div>`;
     return strHTML;
@@ -102,6 +104,10 @@ $(document).ready(function () {
         } else {
           init();
         }
+
+        setTimeout(() => {
+          $('input#searchInput').val('');
+        }, 500);
       }
     });
   }
