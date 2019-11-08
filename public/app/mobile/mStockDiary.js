@@ -124,7 +124,6 @@ $(document).ready(function () {
     }
     
     returnData(method, url, sendData, callback => {
-      console.log(callback);
       if (callback && callback.flag == true) {
         $('div.card-body').html(`<div class="report-got-data text-center">
                                       <p style="left: calc(50% / 2) !important">
