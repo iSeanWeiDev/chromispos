@@ -245,6 +245,17 @@ select {
   font-size: 18px;
 }
 
+.report-got-data p {
+  position: absolute;
+  left: calc(85% / 2);
+  border: 3px solid #1976d2;
+  padding: .4em 1em .4em 1em;
+  font-weight: 700;
+  color: #1976d2;
+  margin-top: 30px;
+  font-size: 18px;
+}
+
 .report-body table tbody .report-got-data p {
   position: absolute;
   left: calc(85% / 2);

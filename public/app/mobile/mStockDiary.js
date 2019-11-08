@@ -107,25 +107,35 @@ $(document).ready(function () {
   }
 
   this.saveProduct = (productID, categoryID) => {
-    var qtySale = $('input#qtySale').val() == "" ? "##": $('input#qtySale').val();
-    var qtyWare = $('input#qtyWare').val() == "" ? "##": $('input#qtyWare').val();
-    var isUpdatedSale = gData[0].SALESFLOORUNIT == qtySale ? false : true;
-    var isUpdatedWare = gData[0].WAREHOUSEUNIT == qtyWare  ? false : true;
+    var wasNullSale = gData[0].SALESFLOORUNIT == "##" ? true : false;
+    var wasNullWare = gData[0].WAREHOUSEUNIT == "##"  ? true : false;
     
     var method = "POST";
     var url = "/mobiles/stockdiary";
     var sendData = {
       productName: $('input#productName').val(),
+      price: $('input#price').val(),
       qtySale: $('input#qtySale').val(),
       qtyWare: $('input#qtyWare').val(),
       productID: productID,
       categoryID: categoryID,
-      isUpdatedSale: isUpdatedSale,
-      isUpdatedWare: isUpdatedWare,
+      wasNullSale: wasNullSale,
+      wasNullWare: wasNullWare,
     }
     
     returnData(method, url, sendData, callback => {
       console.log(callback);
+      if (callback && callback.flag == true) {
+        $('div.card-body').html(`<div class="report-got-data text-center">
+                                      <p style="left: calc(50% / 2) !important">
+                                       Succesfully saved</p>
+                                    </div>`);
+      } else {
+        $('div.card-body').html(`<div class="report-no-data text-center">
+                                    <p style="left: calc(50% / 2) !important">
+                                    Doesn't saved</p>
+                                  </div>`);
+      }
     });
   }
 
