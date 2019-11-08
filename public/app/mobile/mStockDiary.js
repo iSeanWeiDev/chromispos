@@ -44,9 +44,9 @@ $(document).ready(function () {
                         </span>
                       </div>
                       <input 
-                        type="text" 
+                        type="number" 
                         id="price"
-                        value="$${data.PRICESELL}"
+                        value="${data.PRICESELL}"
                         class="form-control" 
                         aria-label="Default" 
                         aria-describedby="inputGroup-sizing-default">
@@ -72,7 +72,7 @@ $(document).ready(function () {
                         <span 
                           class="input-group-text font-weight-bold" 
                           id="inputGroup-sizing-default">
-                          Ware house : &nbsp;
+                          Warehouse : &nbsp;
                         </span>
                       </div>
                       <input 
