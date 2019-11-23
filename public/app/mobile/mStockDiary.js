@@ -89,6 +89,7 @@ $(document).ready(function () {
     return strHTML;
   }
   this.searchData = () => {
+    gData = [];
     var method = "GET";
     var url = "/mobiles/stockdiary"
     var sendData = {
@@ -96,6 +97,7 @@ $(document).ready(function () {
     }
 
     returnData(method, url, sendData, callback => {
+      console.log(callback);
       if (callback && callback.flag == true) {
         if (callback.data.length > 0) {
           gData = callback.data;
@@ -142,6 +144,7 @@ $(document).ready(function () {
                                   </div>`);
       }
     });
+    gData = [];
   }
 
   init()

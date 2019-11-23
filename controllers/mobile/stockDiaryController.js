@@ -32,9 +32,11 @@ var stockDiaryController = {
           })
         }
 
+        console.log(result);
+
         var arrTwo = [];
-        for (var i = 0; i < result.length-1; i++) {
-          for (var j = i+1; j < result.length-1; j++) {
+        for (var i = 0; i < result.length; i++) {
+          for (var j = i+1; j < result.length; j++) {
             if(result[i].REFERENCE == result[j].REFERENCE) {
               arrTwo.push(result[i]);
               arrTwo.push(result[j]);
