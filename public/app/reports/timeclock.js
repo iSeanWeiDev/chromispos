@@ -141,13 +141,13 @@ $(document).ready(function () {
           sendData = {
             startDate: new Date(startDate).toISOString(),
             endDate: new Date(endDate).toISOString(),
-            dbIndex: databaseIndex,
-            peopleId: peopleId
+            hostName: hostName,
+            peopleID: peopleID
           }
         }
       }
 
-      if(dateRange > 0) {
+      if(dateRange > 0 ) {
         var customStartDate;
         var customEndDate;
 
@@ -200,175 +200,39 @@ $(document).ready(function () {
             hostName: hostName,
             peopleID: peopleID
         }
+      } else {
+        mkNoti(
+          'Warning!',
+          'Please choose the database',
+          {
+              status:'warning'
+          }
+        );
+        
+        $('select#select-db-host').focus();
+      }
 
-        if(getObjectSize(sendData) > 0) {
-          EasyLoading.show();
-          var method = "GET";
-          var url = "/reports/timeclock";
-          
-          returnData(method, url, sendData, callback => {
-            EasyLoading.hide();
-            var arrData = callback.data;
-            if (callback && callback.flag == true) {
-              var strInnerHtml = '';
-              if($('input#selected-people').val() == "All Employees") {
-                for (var objPeople of gArrPeople) {
-                  var totalTime = 0;
-                  var overTotalTime = 0;
-                  strInnerHtml += `<tr>
-                                      <td scope="row" 
-                                          class="font-weight-bold text-info" 
-                                          style="font-size: 20px;"
-                                          colspan="4">
-                                          <span> ${ objPeople.NAME } </span>
-                                      </td>
-                                    </tr>
-                                    <tr style="font-size: 16px;">
-                                        <td scope="row" 
-                                            class="font-weight-bold"
-                                            style="width: 30%;">
-                                            TIME IN
-                                        </td>
-                                        <td class="font-weight-bold"
-                                            style="width: 30%;">
-                                            TIME OUT
-                                        </td>
-                                        <td class="text-center font-weight-bold" 
-                                            style="width: 20%;">
-                                            REG HOURS
-                                        </td>
-                                        <td class="text-center font-weight-bold"
-                                            style="width: 20%;">
-                                            OVERTIME HOURS
-                                        </td>
-                                    </tr>`;
-
-                  for(var i=0; i < arrData.length; i++) {
-                    if(objPeople.NAME == arrData[i].NAME) {
-                      var flag = false;
-                      var dailyTotal = 0;
-                      var dailyRegTotal = 0;
-                      var dailyOverTotal = 0;
-                      var index = 0;
-
-                      for (var j=i; j< arrData.length; j++) {
-                        if(arrData[i].NAME == arrData[j].NAME && arrData[i].STARTSHIFT.split(" ")[0] == arrData[j].STARTSHIFT.split(" ")[0]){
-                          flag = true;
-                          dailyTotal += arrData[j].TOTALHOURS;
-                          dailyTotal += (arrData[j].OVERTIME);
-
-                          strInnerHtml += `<tr>
-                                              <td scope="row"
-                                                  style="width: 30%;">
-                                                  ${ converISODateToDefault(arrData[j].STARTSHIFT) }
-                                              </td>
-                                              <td style="width: 30%;">
-                                                  ${ converISODateToDefault(arrData[j].ENDSHIFT) }
-                                              </td>
-                                              <td class="text-center"
-                                                  style="width: 20%">
-                                                  ${ parseFloat(arrData[j].TOTALHOURS).toFixed(2) }
-                                              </td>
-                                              <td class="text-center"
-                                                  style="width: 20%">
-                                                  ${ parseFloat(arrData[j].OVERTIME).toFixed(2) }
-                                              </td>
-                                          </tr>`;
-                          index = j;
-                        }
-                      }
-
-                      if (flag == true) {
-                        dailyRegTotal = dailyTotal > 8 ? 8 : dailyTotal;
-                        dailyOverTotal = dailyTotal > 8 ? dailyTotal-8 : 0;
-                        totalTime += dailyRegTotal;
-                        overTotalTime += dailyOverTotal;
-
-                        strInnerHtml += `<tr class="text-center font-weight-bold" style="font-size: 15px; padding-bottom:5px;">
-                                            <td scope="row" class="text-right"
-                                                colspan="2" style="width: 60%;">
-                                                Daily Total
-                                            </td>
-
-                                            <td class="text-center"
-                                                style="width: 20%">
-                                                ${ dailyRegTotal.toFixed(2) }
-                                            </td>
-                                            <td class="text-center"
-                                                style="width: 20%">
-                                                ${ dailyOverTotal.toFixed(2) }
-                                            </td>
-                                        </tr>`;
-                        i = index;
-                      }
-
-
-                      if(flag == false) {
-                        totalTime += arrData[i].TOTALHOURS;
-                        overTotalTime += arrData[i].OVERTIME;
-
-                        strInnerHtml += `<tr>
-                                            <td scope="row"
-                                                style="width: 30%;">
-                                                ${ converISODateToDefault(arrData[i].STARTSHIFT) }
-                                            </td>
-                                            <td style="width: 30%;">
-                                                ${ converISODateToDefault(arrData[i].ENDSHIFT) }
-                                            </td>
-                                            <td class="text-center"
-                                                style="width: 20%">
-                                                ${ parseFloat(arrData[i].TOTALHOURS).toFixed(2) }
-                                            </td>
-                                            <td class="text-center"
-                                                style="width: 20%">
-                                                ${ parseFloat(arrData[i].OVERTIME).toFixed(2) }
-                                            </td>
-                                        </tr>
-                                        <tr class="text-center font-weight-bold" style="font-size: 16px;">
-                                            <td scope="row" class="text-right"
-                                                colspan="2" style="width: 60%;">
-                                                Daily Total
-                                            </td>
-
-                                            <td class="text-center"
-                                                style="width: 20%">
-                                                ${ parseFloat(arrData[i].TOTALHOURS).toFixed(2) }
-                                            </td>
-                                            <td class="text-center"
-                                                style="width: 20%">
-                                                ${ parseFloat(arrData[i].OVERTIME).toFixed(2) }
-                                            </td>
-                                        </tr>`;
-                      }
-                    } 
-                  }
-
-                  strInnerHtml += `<tr class="pb-3 text-info" style="font-size: 16px;">
-                                      <td scope="row"
-                                          class="text-right font-weight-bold pr-5"
-                                          style="width: 60%;" colspan="2">
-                                          Total
-                                      </td>
-                                      <td class="text-center font-weight-bold"
-                                          style="width: 20%">
-                                          ${ parseFloat(totalTime).toFixed(2) }
-                                      </td>
-                                      <td class="text-center font-weight-bold"
-                                          style="width: 20%">
-                                          ${ parseFloat(overTotalTime).toFixed(2) }
-                                      </td>
-                                    </tr>`;
-                }
-              } else {
+      if(getObjectSize(sendData) > 0) {
+        EasyLoading.show();
+        var method = "GET";
+        var url = "/reports/timeclock";
+        
+        returnData(method, url, sendData, callback => {
+          EasyLoading.hide();
+          var arrData = callback.data;
+          if (callback && callback.flag == true) {
+            var strInnerHtml = '';
+            if($('input#selected-people').val() == "All Employees") {
+              for (var objPeople of gArrPeople) {
                 var totalTime = 0;
                 var overTotalTime = 0;
                 strInnerHtml += `<tr>
-                                      <td scope="row" 
-                                          class="font-weight-bold text-info" 
-                                          style="font-size: 20px;"
-                                          colspan="4">
-                                          <span> ${ $('input#selected-people').val() } </span>
-                                      </td>
+                                    <td scope="row" 
+                                        class="font-weight-bold text-info" 
+                                        style="font-size: 20px;"
+                                        colspan="4">
+                                        <span> ${ objPeople.NAME } </span>
+                                    </td>
                                   </tr>
                                   <tr style="font-size: 16px;">
                                       <td scope="row" 
@@ -389,15 +253,17 @@ $(document).ready(function () {
                                           OVERTIME HOURS
                                       </td>
                                   </tr>`;
-                for(var i = 0; i < arrData.length; i++) {
-                  var flag = false;
-                  var dailyTotal = 0;
-                  var dailyRegTotal = 0;
-                  var dailyOverTotal = 0;
-                  var index = 0;
 
-                  for(var j = i; j < arrData.length; j++) {
-                    if(arrData[i].NAME == arrData[j].NAME && arrData[i].STARTSHIFT.split(" ")[0] == arrData[j].STARTSHIFT.split(" ")[0]){
+                for(var i=0; i < arrData.length; i++) {
+                  if(objPeople.NAME == arrData[i].NAME) {
+                    var flag = false;
+                    var dailyTotal = 0;
+                    var dailyRegTotal = 0;
+                    var dailyOverTotal = 0;
+                    var index = 0;
+
+                    for (var j=i; j< arrData.length; j++) {
+                      if(arrData[i].NAME == arrData[j].NAME && arrData[i].STARTSHIFT.split(" ")[0] == arrData[j].STARTSHIFT.split(" ")[0]){
                         flag = true;
                         dailyTotal += arrData[j].TOTALHOURS;
                         dailyTotal += (arrData[j].OVERTIME);
@@ -420,71 +286,72 @@ $(document).ready(function () {
                                             </td>
                                         </tr>`;
                         index = j;
+                      }
                     }
-                  }
 
-                  if(flag == true) {
-                    dailyRegTotal = dailyTotal > 8 ? 8 : dailyTotal;
-                    dailyOverTotal = dailyTotal > 8 ? dailyTotal-8 : 0;
-                    totalTime += dailyRegTotal;
-                    overTotalTime += dailyOverTotal;
+                    if (flag == true) {
+                      dailyRegTotal = dailyTotal > 8 ? 8 : dailyTotal;
+                      dailyOverTotal = dailyTotal > 8 ? dailyTotal-8 : 0;
+                      totalTime += dailyRegTotal;
+                      overTotalTime += dailyOverTotal;
 
-                    strInnerHtml += `<tr class="text-center font-weight-bold" style="font-size: 15px; padding-bottom:5px;">
-                                        <td scope="row" class="text-right"
-                                            colspan="2" style="width: 60%;">
-                                            Daily Total
-                                        </td>
+                      strInnerHtml += `<tr class="text-center font-weight-bold" style="font-size: 15px; padding-bottom:5px;">
+                                          <td scope="row" class="text-right"
+                                              colspan="2" style="width: 60%;">
+                                              Daily Total
+                                          </td>
 
-                                        <td class="text-center"
-                                            style="width: 20%">
-                                            ${ dailyRegTotal.toFixed(2) }
-                                        </td>
-                                        <td class="text-center"
-                                            style="width: 20%">
-                                            ${ dailyOverTotal.toFixed(2) }
-                                        </td>
-                                    </tr>`;
-                    i = index;
-                  }  
+                                          <td class="text-center"
+                                              style="width: 20%">
+                                              ${ dailyRegTotal.toFixed(2) }
+                                          </td>
+                                          <td class="text-center"
+                                              style="width: 20%">
+                                              ${ dailyOverTotal.toFixed(2) }
+                                          </td>
+                                      </tr>`;
+                      i = index;
+                    }
 
-                  if(flag == false) {
-                    totalTime += arrData[i].TOTALHOURS;
-                    overTotalTime += arrData[i].OVERTIME;
 
-                    strInnerHtml += `<tr>
-                                        <td scope="row"
-                                            style="width: 30%;">
-                                            ${ converISODateToDefault(arrData[i].STARTSHIFT) }
-                                        </td>
-                                        <td style="width: 30%;">
-                                            ${ converISODateToDefault(arrData[i].ENDSHIFT) }
-                                        </td>
-                                        <td class="text-center"
-                                            style="width: 20%">
-                                            ${ parseFloat(arrData[i].TOTALHOURS).toFixed(2) }
-                                        </td>
-                                        <td class="text-center"
-                                            style="width: 20%">
-                                            ${ parseFloat(arrData[i].OVERTIME).toFixed(2) }
-                                        </td>
-                                    </tr>
-                                    <tr class="text-center font-weight-bold" style="font-size: 16px;">
-                                        <td scope="row" class="text-right"
-                                            colspan="2" style="width: 60%;">
-                                            Daily Total
-                                        </td>
+                    if(flag == false) {
+                      totalTime += arrData[i].TOTALHOURS;
+                      overTotalTime += arrData[i].OVERTIME;
 
-                                        <td class="text-center"
-                                            style="width: 20%">
-                                            ${ parseFloat(arrData[i].TOTALHOURS).toFixed(2) }
-                                        </td>
-                                        <td class="text-center"
-                                            style="width: 20%">
-                                            ${ parseFloat(arrData[i].OVERTIME).toFixed(2) }
-                                        </td>
-                                    </tr>`;
-                    
-                  }
+                      strInnerHtml += `<tr>
+                                          <td scope="row"
+                                              style="width: 30%;">
+                                              ${ converISODateToDefault(arrData[i].STARTSHIFT) }
+                                          </td>
+                                          <td style="width: 30%;">
+                                              ${ converISODateToDefault(arrData[i].ENDSHIFT) }
+                                          </td>
+                                          <td class="text-center"
+                                              style="width: 20%">
+                                              ${ parseFloat(arrData[i].TOTALHOURS).toFixed(2) }
+                                          </td>
+                                          <td class="text-center"
+                                              style="width: 20%">
+                                              ${ parseFloat(arrData[i].OVERTIME).toFixed(2) }
+                                          </td>
+                                      </tr>
+                                      <tr class="text-center font-weight-bold" style="font-size: 16px;">
+                                          <td scope="row" class="text-right"
+                                              colspan="2" style="width: 60%;">
+                                              Daily Total
+                                          </td>
+
+                                          <td class="text-center"
+                                              style="width: 20%">
+                                              ${ parseFloat(arrData[i].TOTALHOURS).toFixed(2) }
+                                          </td>
+                                          <td class="text-center"
+                                              style="width: 20%">
+                                              ${ parseFloat(arrData[i].OVERTIME).toFixed(2) }
+                                          </td>
+                                      </tr>`;
+                    }
+                  } 
                 }
 
                 strInnerHtml += `<tr class="pb-3 text-info" style="font-size: 16px;">
@@ -501,33 +368,166 @@ $(document).ready(function () {
                                         style="width: 20%">
                                         ${ parseFloat(overTotalTime).toFixed(2) }
                                     </td>
+                                  </tr>`;
+              }
+            } else {
+              var totalTime = 0;
+              var overTotalTime = 0;
+              strInnerHtml += `<tr>
+                                    <td scope="row" 
+                                        class="font-weight-bold text-info" 
+                                        style="font-size: 20px;"
+                                        colspan="4">
+                                        <span> ${ $('input#selected-people').val() } </span>
+                                    </td>
+                                </tr>
+                                <tr style="font-size: 16px;">
+                                    <td scope="row" 
+                                        class="font-weight-bold"
+                                        style="width: 30%;">
+                                        TIME IN
+                                    </td>
+                                    <td class="font-weight-bold"
+                                        style="width: 30%;">
+                                        TIME OUT
+                                    </td>
+                                    <td class="text-center font-weight-bold" 
+                                        style="width: 20%;">
+                                        REG HOURS
+                                    </td>
+                                    <td class="text-center font-weight-bold"
+                                        style="width: 20%;">
+                                        OVERTIME HOURS
+                                    </td>
                                 </tr>`;
+              for(var i = 0; i < arrData.length; i++) {
+                var flag = false;
+                var dailyTotal = 0;
+                var dailyRegTotal = 0;
+                var dailyOverTotal = 0;
+                var index = 0;
+
+                for(var j = i; j < arrData.length; j++) {
+                  if(arrData[i].NAME == arrData[j].NAME && arrData[i].STARTSHIFT.split(" ")[0] == arrData[j].STARTSHIFT.split(" ")[0]){
+                      flag = true;
+                      dailyTotal += arrData[j].TOTALHOURS;
+                      dailyTotal += (arrData[j].OVERTIME);
+
+                      strInnerHtml += `<tr>
+                                          <td scope="row"
+                                              style="width: 30%;">
+                                              ${ converISODateToDefault(arrData[j].STARTSHIFT) }
+                                          </td>
+                                          <td style="width: 30%;">
+                                              ${ converISODateToDefault(arrData[j].ENDSHIFT) }
+                                          </td>
+                                          <td class="text-center"
+                                              style="width: 20%">
+                                              ${ parseFloat(arrData[j].TOTALHOURS).toFixed(2) }
+                                          </td>
+                                          <td class="text-center"
+                                              style="width: 20%">
+                                              ${ parseFloat(arrData[j].OVERTIME).toFixed(2) }
+                                          </td>
+                                      </tr>`;
+                      index = j;
+                  }
+                }
+
+                if(flag == true) {
+                  dailyRegTotal = dailyTotal > 8 ? 8 : dailyTotal;
+                  dailyOverTotal = dailyTotal > 8 ? dailyTotal-8 : 0;
+                  totalTime += dailyRegTotal;
+                  overTotalTime += dailyOverTotal;
+
+                  strInnerHtml += `<tr class="text-center font-weight-bold" style="font-size: 15px; padding-bottom:5px;">
+                                      <td scope="row" class="text-right"
+                                          colspan="2" style="width: 60%;">
+                                          Daily Total
+                                      </td>
+
+                                      <td class="text-center"
+                                          style="width: 20%">
+                                          ${ dailyRegTotal.toFixed(2) }
+                                      </td>
+                                      <td class="text-center"
+                                          style="width: 20%">
+                                          ${ dailyOverTotal.toFixed(2) }
+                                      </td>
+                                  </tr>`;
+                  i = index;
+                }  
+
+                if(flag == false) {
+                  totalTime += arrData[i].TOTALHOURS;
+                  overTotalTime += arrData[i].OVERTIME;
+
+                  strInnerHtml += `<tr>
+                                      <td scope="row"
+                                          style="width: 30%;">
+                                          ${ converISODateToDefault(arrData[i].STARTSHIFT) }
+                                      </td>
+                                      <td style="width: 30%;">
+                                          ${ converISODateToDefault(arrData[i].ENDSHIFT) }
+                                      </td>
+                                      <td class="text-center"
+                                          style="width: 20%">
+                                          ${ parseFloat(arrData[i].TOTALHOURS).toFixed(2) }
+                                      </td>
+                                      <td class="text-center"
+                                          style="width: 20%">
+                                          ${ parseFloat(arrData[i].OVERTIME).toFixed(2) }
+                                      </td>
+                                  </tr>
+                                  <tr class="text-center font-weight-bold" style="font-size: 16px;">
+                                      <td scope="row" class="text-right"
+                                          colspan="2" style="width: 60%;">
+                                          Daily Total
+                                      </td>
+
+                                      <td class="text-center"
+                                          style="width: 20%">
+                                          ${ parseFloat(arrData[i].TOTALHOURS).toFixed(2) }
+                                      </td>
+                                      <td class="text-center"
+                                          style="width: 20%">
+                                          ${ parseFloat(arrData[i].OVERTIME).toFixed(2) }
+                                      </td>
+                                  </tr>`;
+                  
+                }
               }
 
-              $('tbody#display-report').html(strInnerHtml);
-            } else {
-              $('tbody#display-report').html(`<div class="report-no-data"><p>no data to display</p></div>`);
+              strInnerHtml += `<tr class="pb-3 text-info" style="font-size: 16px;">
+                                  <td scope="row"
+                                      class="text-right font-weight-bold pr-5"
+                                      style="width: 60%;" colspan="2">
+                                      Total
+                                  </td>
+                                  <td class="text-center font-weight-bold"
+                                      style="width: 20%">
+                                      ${ parseFloat(totalTime).toFixed(2) }
+                                  </td>
+                                  <td class="text-center font-weight-bold"
+                                      style="width: 20%">
+                                      ${ parseFloat(overTotalTime).toFixed(2) }
+                                  </td>
+                              </tr>`;
             }
-          });
-        } else {
-          mkNoti(
-            'Warning!',
-            'Please select the filter as you want',
-            {
-                status:'warning'
-            }
-          );
-        }
+
+            $('tbody#display-report').html(strInnerHtml);
+          } else {
+            $('tbody#display-report').html(`<div class="report-no-data"><p>no data to display</p></div>`);
+          }
+        });
       } else {
         mkNoti(
           'Warning!',
-          'Please choose the database',
+          'Please select the filter as you want',
           {
               status:'warning'
           }
         );
-        
-        $('select#select-db-host').focus();
       }
     }
   }

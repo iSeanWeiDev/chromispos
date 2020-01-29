@@ -9,6 +9,8 @@ var salesByMonthController = require('../controllers/reports/salesByMonthControl
 var salesByYearController = require('../controllers/reports/salesByYearController');
 var categorySalesController = require('../controllers/reports/categorySalesController');
 var timeClockController = require('../controllers/reports/timeClockController');
+var wareHouseMoverController = require('../controllers/reports/wareHoseMoverController.js');
+var inventoryTransferController = require('../controllers/reports/inventoryTransferController');
 
 router.get('/inventory', inventoryController.getData);
 router.get('/categories', getListContorller.getCategoryList);
@@ -18,10 +20,14 @@ router.get('/inventory/items/history', inventoryController.getItemSoldHistory);
 router.get('/productsales', productSalesController.getData);
 router.get('/stockdiary', stockDiaryController.getData);
 router.post('/stockdiary', stockDiaryController.updateData);
+router.get('/stockdiary/categories', stockDiaryController.getCategories);
+router.get('/stockdiary/suppliers', stockDiaryController.getSuppliers);
 router.get('/salesbyday', salesByDayController.getData);
 router.get('/salesbymonth', salesByMonthController.getData);
 router.get('/salesbyyear', salesByYearController.getData);
 router.get('/categoysales', categorySalesController.getData);
 router.get('/timeclock', timeClockController.getData);
+router.get('/warehousemover', wareHouseMoverController.getData);
+router.get('/inventorytransfer', inventoryTransferController.getData);
 
 module.exports = router;

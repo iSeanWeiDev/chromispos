@@ -34,6 +34,27 @@ var settingController = {
       }
     });
   },
-}
+  deleteConnection: (req, res) => {
+    console.log(req.body);
+    DbModel.destroy({
+      where: {
+        id: req.body.id
+      }
+    })
+      .then(result => {
+        console.log(result);
+        res.status(201).json({
+          flag: true,
+          data: result,
+        });
+      })
+      .catch(error => {
+        res.status(500).json({
+          flag: false,
+          data: error,
+        })
+      });
+  },
+};
 
 module.exports = settingController;

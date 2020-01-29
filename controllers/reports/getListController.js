@@ -1,7 +1,7 @@
 require('dotenv').config();
 var mysql = require('mysql2');
 var sqliteService = require('../../services/sqlite');
-var queryList = require('../../database/queries/getList');
+var queryList = require('../../database/queries/reports/getList');
 
 var getListContorller = {
   getCategoryList: (req, res) => {
@@ -26,12 +26,12 @@ var getListContorller = {
 
       dbConn.query(query, params, (error, result) => {
         if(error) {
-          res.json({
+          dbConn.end();
+
+          return res.json({
             cb: false,
             data: error,
           });
-
-          dbConn.end();
         }
 
         var arrSendData = [];
@@ -69,12 +69,12 @@ var getListContorller = {
 
       dbConn.query(query, params, (error, result) => {
         if(error) {
-          res.json({
+          dbConn.end();
+
+          return res.json({
             cb: false,
             data: error,
           });
-          
-          dbConn.end();
         }
 
         var arrSendData = [];

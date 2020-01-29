@@ -16,6 +16,7 @@ $(document).ready(function () {
                   <td>$${formatNumber(validateNumber(data.TOTALSALES.toFixed(2)))}</td>
                   <td>$${formatNumber(validateNumber(data.TOTALTAXCOLLECTED.toFixed(2)))}</td>
                   <td>$${formatNumber(validateNumber(data.TOTAL.toFixed(2)))}</td>
+                  <td>${data.COUNTORDER}</td>
                 </tr>`;
     return strHtml;
   }

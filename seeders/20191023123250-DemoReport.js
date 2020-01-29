@@ -87,6 +87,24 @@ module.exports = {
         updatedAt: new Date()
       },
       {
+        name: 'warehousemover',
+        detail: 'Warehouse Mover',
+        type: 'desktop',
+        isAdmin: true,
+        isUser: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
+        name: 'inventorytransfer',
+        detail: 'Inventory Transfer',
+        type: 'desktop',
+        isAdmin: true,
+        isUser: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      },
+      {
         name: 'mstockdiary',
         detail: 'Stock Diary',
         type: 'mobile',

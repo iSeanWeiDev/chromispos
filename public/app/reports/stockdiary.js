@@ -12,10 +12,49 @@ $(document).ready(function () {
   var rowCount = 15;
   var crrPage = 1;
   var gEditedRow = [];
+  var gCatertories = [];
+  var gSuppliers = [];
 
   function returnRowHTML(data) {
     var salesFloorUnit = data.SALESFLOORUNIT != "##" ? data.SALESFLOORUNIT : "-";
     var wareHouseUnit = data.WAREHOUSEUNIT != "##" ? data.WAREHOUSEUNIT : "-";
+
+    // Category append text.
+    var strAppendCategory = `<select class="custom-select" name="" id="select-category-${data.PRODUCTID}-${data.CATEGORYID}">
+                              <option value="0">
+                                  NONE
+                              </option>`;
+    for (var obj of gCatertories) {
+      if (obj.ID == data.CATEGORYID) {
+        strAppendCategory += (`<option value="${obj.ID}" selected>
+                                  ${obj.NAME}
+                              </option>`);
+      } else {
+        strAppendCategory += (`<option value="${obj.ID}">
+                                  ${obj.NAME}
+                              </option>`);
+      }
+    
+    }
+    strAppendCategory += (`</select></div>`);
+
+    // Supplier append text.
+    var strAppendSupplier = `<select class="custom-select" name="" id="select-supplier-${data.PRODUCTID}-${data.CATEGORYID}">
+                              <option value="0">
+                                  NONE
+                              </option>`;
+    for (var obj of gSuppliers) {
+      if (obj.ID == data.SUPPLIER) {
+        strAppendSupplier += (`<option value="${obj.ID}" selected>
+                    ${obj.SUPPLIERNAME}
+                </option>`);
+      } else {
+        strAppendSupplier += (`<option value="${obj.ID}">
+                    ${obj.SUPPLIERNAME}
+                </option>`);
+      }
+    }
+    strAppendSupplier += (`</select></div>`);
 
     var strHTML = ` <tr onclick="editRow(${"'"+data.PRODUCTID+"'"}, ${"'"+data.CATEGORYID+"'"})"
                       onkeypress="trKeypressEvent(${"'"+data.PRODUCTID+"'"}, ${"'"+data.CATEGORYID+"'"})"
@@ -28,22 +67,30 @@ $(document).ready(function () {
                               value="${ data.REFERENCE }" disabled>
                       </td>
 
-                      <td style="width: 40%;">
+                      <td style="width: 32%;">
                           <input type="text" 
                               id="input-row-pname-${data.PRODUCTID}-${data.CATEGORYID}"
                               class="table-row-edit-disabled"
                               value="${ data.PRODUCTNAME.replace('"', `'`) }" disabled>
                       </td>
 
-                      <td style="width: 10%;">
+                      <td style="width: 8%;">
                           <input type="text" 
                               id="input-row-rprice-${data.PRODUCTID}-${data.CATEGORYID}"
                               class="table-row-edit-disabled text-center font-weight-bold"
-                              value="$${formatNumber(data.PRICESELL.toFixed(2)) }" disabled>
+                              value="$${formatNumber(parseFloat(data.PRICESELL).toFixed(2)) }" disabled>
+                      </td> 
+                      
+                      <td style="width: 10%" id="category-${data.PRODUCTID}-${data.CATEGORYID}">
+                        ${strAppendCategory}
+                      </td>
+                      
+                      <td style="width: 10%" id="supplier-${data.PRODUCTID}-${data.CATEGORYID}">
+                        ${strAppendSupplier}
                       </td>
 
                       <td id="td-row-sqty-${data.PRODUCTID}-${data.CATEGORYID}"
-                          style="width: 12.5%;">
+                          style="width: 7.5%;">
                           <input type="text" 
                               id="input-row-sqty-${data.PRODUCTID}-${data.CATEGORYID}"
                               class="table-row-edit-disabled text-center font-weight-bold"
@@ -51,7 +98,7 @@ $(document).ready(function () {
                       </td>
 
                       <td id="td-row-wqty-${data.PRODUCTID}-${data.CATEGORYID}"
-                          style="width: 12.5%;">
+                          style="width: 7.5%;">
                           <input type="text" 
                               id="input-row-wqty-${data.PRODUCTID}-${data.CATEGORYID}"
                               class="table-row-edit-disabled text-center font-weight-bold"
@@ -76,7 +123,8 @@ $(document).ready(function () {
                               Edit
                           </button>
                       </td>
-                  </tr>`;
+                  </tr>`;      
+
     return strHTML;
   }
 
@@ -87,13 +135,15 @@ $(document).ready(function () {
     var sendData = {
       productID: productID,
       categoryID: categoryID,
-      valRef: $('input#input-row-ref-'+productID+'-'+categoryID).val(),
-      valName: $('input#input-row-pname-'+productID+'-'+categoryID).val(),
-      valPrice: $('input#input-row-rprice-'+productID+'-'+categoryID).val(),
+      valRef: $(`input[id*='input-row-ref-${productID}-${categoryID}']`).val(),
+      valName: $(`input[id*='input-row-pname-${productID}-${categoryID}']`).val(),
+      valPrice: $(`input[id*='input-row-rprice-${productID}-${categoryID}']`).val(),
       wasNullSale: wasNullSale,
       wasNullWare: wasNullWare,
-      valSale: $('input#input-row-sqty-'+productID+'-'+categoryID).val(),
-      valWare: $('input#input-row-wqty-'+productID+'-'+categoryID).val()
+      valSale: $(`input[id*='input-row-sqty-${productID}-${categoryID}']`).val(),
+      valWare: $(`input[id*='input-row-wqty-${productID}-${categoryID}']`).val(),
+      changedSupplierID: $(`select[id*='select-supplier-${productID}-${categoryID}']`).val(),
+      changedCategoryID: $(`select[id*='select-category-${productID}-${categoryID}']`).val(),
     }
 
     if (getObjectSize(sendData) > 0) {
@@ -103,58 +153,58 @@ $(document).ready(function () {
       returnData(method, url, sendData, callback => {
         EasyLoading.hide();
         if(callback && callback.flag == true) {
-          $('button#btn-save-row-'+productID+'-'+categoryID).css("display", "none");
-          $('button#btn-cancel-row-'+productID+'-'+categoryID).css("display", "none");
-          $('button#btn-edit-row-'+productID+'-'+categoryID).css("display", "inline-block");
+          $(`button[id*='btn-save-row-${productID}-${categoryID}']`).css("display", "none");
+          $(`button[id*='btn-cancel-row-${productID}-${categoryID}']`).css("display", "none");
+          $(`button[id*='btn-edit-row-${productID}-${categoryID}']`).css("display", "inline-block");
 
           if (flagUsedGData == true) {
             for (var obj of gfilteredData) {
               if (obj.CATEGORYID == categoryID && obj.PRODUCTID == productID) {
-                var saleUnit = $('input#input-row-sqty-'+productID+'-'+categoryID).val() == "" 
-                                ? "##" : $('input#input-row-sqty-'+productID+'-'+categoryID).val();
-                var wareUnit = $('input#input-row-wqty-'+productID+'-'+categoryID).val() == ""
-                                ? "##" : $('input#input-row-wqty-'+productID+'-'+categoryID).val();
+                var saleUnit = $(`input[id*='input-row-sqty-${productID}-${categoryID}']`).val() == "" 
+                                ? "##" : $(`input[id*='input-row-sqty-${productID}-${categoryID}']`).val();
+                var wareUnit = $(`input[id*='input-row-wqty-${productID}-${categoryID}']`).val() == ""
+                                ? "##" : $(`input[id*='input-row-wqty-${productID}-${categoryID}']`).val();
                 obj.CATEGORYID = categoryID;
                 obj.PRODUCTID = productID;
-                obj.PRICESELL = $('input#input-row-rprice-'+productID+'-'+categoryID).val();
-                obj.PRODUCTNAME = $('input#input-row-pname-'+productID+'-'+categoryID).val();
-                obj.REFERENCE = $('input#input-row-ref-'+productID+'-'+categoryID).val()
+                obj.PRICESELL = $(`input[id*='input-row-rprice-${productID}-${categoryID}']`).val();
+                obj.PRODUCTNAME = $(`input[id*='input-row-pname-${productID}-${categoryID}']`).val();
+                obj.REFERENCE = $(`input[id*='input-row-ref-${productID}-${categoryID}']`).val()
                 obj.SALESFLOORUNIT = saleUnit;
                 obj.WAREHOUSEUNIT = wareUnit;
               }
             }
           }
 
-          $('input#input-row-ref-'+productID+'-'+categoryID)
+          $(`input[id*='input-row-ref-${productID}-${categoryID}']`)
               .addClass('table-row-edit-disabled')
               .removeClass('table-row-edit-enabled')
               .prop("disabled", true);
 
-          $('input#input-row-pname-'+productID+'-'+categoryID)
+          $(`input[id*='input-row-pname-${productID}-${categoryID}']`)
               .addClass('table-row-edit-disabled')
               .removeClass('table-row-edit-enabled')
               .prop("disabled", true);
 
-          $('input#input-row-rprice-'+productID+'-'+categoryID)
+          $(`input[id*='input-row-rprice-${productID}-${categoryID}']`)
               .addClass('table-row-edit-disabled')
               .removeClass('table-row-edit-enabled')
               .prop("disabled", true);
-          var replacedRetailPrice = "$"+$('input#input-row-rprice-'+productID+'-'+categoryID).val(); 
-          $('input#input-row-rprice-'+productID+'-'+categoryID)
+          var replacedRetailPrice = "$"+$(`input[id*='input-row-rprice-${productID}-${categoryID}']`).val(); 
+          $(`input[id*='input-row-rprice-${productID}-${categoryID}']`)
               .prop("type", "text")
               .val(replacedRetailPrice);
 
-          $('input#input-row-sqty-'+productID+'-'+categoryID)
+          $(`input[id*='input-row-sqty-${productID}-${categoryID}']`)
               .addClass('table-row-edit-disabled')
               .removeClass('table-row-edit-enabled')
               .prop("disabled", true);
 
-          $('input#input-row-wqty-'+productID+'-'+categoryID)
+          $(`input[id*='input-row-wqty-${productID}-${categoryID}']`)
               .addClass('table-row-edit-disabled')
               .removeClass('table-row-edit-enabled')
               .prop("disabled", true);
 
-          $('td#td-row-qty-'+productID+'-'+categoryID).children().remove();
+          $(`td[id*='td-row-qty-${productID}-${categoryID}']`).children().remove();
 
           if(flagUsedGData == true) {
             for(var obj of gfilteredData) {
@@ -162,23 +212,23 @@ $(document).ready(function () {
                   var saleUnitDisable = obj.SALESFLOORUNIT == "##" ? "-" : obj.SALESFLOORUNIT;
                   var wareUnitDisable = obj.WAREHOUSEUNIT == "##" ? "-" : obj.WAREHOUSEUNIT;
 
-                  $('td#td-row-sqty-'+productID+'-'+categoryID).html(`<input type="text" 
+                  $(`td[id*='td-row-sqty-${productID}-${categoryID}']`).html(`<input type="text" 
                                                                           id="input-row-sqty-${obj.PRODUCTID}-${obj.CATEGORYID}"
                                                                           class="table-row-edit-disabled text-center font-weight-bold"
                                                                           value="${ saleUnitDisable }" disabled>`);
-                  $('td#td-row-wqty-'+productID+'-'+categoryID).html(`<input type="text" 
+                  $(`td[id*='td-row-wqty-${productID}-${categoryID}']`).html(`<input type="text" 
                                                                           id="input-row-wqty-${obj.PRODUCTID}-${obj.CATEGORYID}"
                                                                           class="table-row-edit-disabled text-center font-weight-bold"
                                                                           value="${ wareUnitDisable }" disabled>`);
               }
             }
           }
-          $(`tr#tr-row-${productID}-${categoryID}`).children().children()
+          $(`tr[id*='tr-row-${productID}-${categoryID}']`).children().children()
               .css("color", "green")
               .css("font-weight", "bold");
               
-          $('button#btn-edit-row-'+productID+'-'+categoryID).parent().html('<p class="font-weight-bold pt-1" style="color:green;">SAVED</p>');
-          $('button#btn-edit-row-'+productID+'-'+categoryID).remove();   
+          $(`button[id*='btn-edit-row-${productID}-${categoryID}']`).parent().html('<p class="font-weight-bold pt-1" style="color:green;">SAVED</p>');
+          $(`button[id*='btn-edit-row-${productID}-${categoryID}']`).remove();   
 
           $('input#table-search').focus().select();
           gEditedRow = [];
@@ -187,7 +237,36 @@ $(document).ready(function () {
     }
   }
 
+  function getCategoryList() {
+    var method = "GET";
+    var url = "/reports/stockdiary/categories";
+    var sendData = {}
+
+    returnData(method, url, sendData, callback => {
+      if (callback && callback.flag == true) {
+        gCatertories = callback.data;
+      } else {
+        gCatertories = [];
+      }
+    });
+  }
+
+  function getSupplierList() {
+    var method = "GET";
+    var url = "/reports/stockdiary/suppliers";
+    var sendData = {}
+    returnData(method, url, sendData, callback => {
+      if (callback && callback.flag == true) {
+        gSuppliers = callback.data;
+      } else {
+        gSuppliers = [];
+      }
+    });
+  }
+
   function init() {
+    gCatertories = [];
+    gSuppliers = [];
     EasyLoading.show();
     var method = "GET";
     var url = "/reports/stockdiary";
@@ -207,6 +286,9 @@ $(document).ready(function () {
           $('tbody#display-report').html(`<div class="report-no-data text-center"><p>Product not found</p></div>`);
       }
     });
+
+    getCategoryList();
+    getSupplierList();
   }
 
   init(); 
@@ -222,10 +304,9 @@ $(document).ready(function () {
       var searchKey = $(this).val().toLowerCase(); 
       var flagReference = false;
       var flagName = false;
-
       if(searchKey != "") {
         for(var obj of gData) {
-          var flagReference = obj.REFERENCE.toLowerCase().indexOf(searchKey) !== -1 ? true : false;
+          var flagReference = obj.CODE.toLowerCase().indexOf(searchKey) !== -1 ? true : false;
           var flagName = obj.PRODUCTNAME.toLowerCase().indexOf(searchKey) !== -1 ? true : false;
           
           if(flagReference == true || flagName == true) {
@@ -257,37 +338,40 @@ $(document).ready(function () {
           $('input#table-search').val("");
           gEditedRow = [];
 
-          $('button#btn-save-row-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).css("display", "inline-block");
-          $('button#btn-cancel-row-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).css("display", "inline-block");
-          $('button#btn-edit-row-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).css("display", "none");
+          // $('button#btn-save-row-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).css("display", "inline-block");
+          // $('button#btn-cancel-row-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).css("display", "inline-block");
+          $(`button[id*='btn-save-row-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`).css("display", "inline-block");
+          $(`button[id*='btn-cancel-row-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`).css("display", "inline-block");
+          
+          $(`button[id*='btn-edit-row-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`).css("display", "none");
 
-          $('input#input-row-ref-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+          $(`input[id*='input-row-ref-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
               .removeClass('table-row-edit-disabled')
               .addClass('table-row-edit-enabled')
               .prop("disabled", true);
 
-          $('input#input-row-pname-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+          $(`input[id*='input-row-pname-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
               .removeClass('table-row-edit-disabled')
               .addClass('table-row-edit-enabled')
               .prop("disabled", false);
 
-          $('input#input-row-rprice-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+          $(`input[id*='input-row-rprice-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
               .removeClass('table-row-edit-disabled')
               .addClass('table-row-edit-enabled')
               .prop("disabled", false);
 
-          var replacedRetailPrice = $('input#input-row-rprice-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).val().replace("$", "").replace(",", ""); 
-          $('input#input-row-rprice-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+          var replacedRetailPrice = $(`input[id*='input-row-rprice-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`).val().replace("$", "").replace(",", ""); 
+          $(`input[id*='input-row-rprice-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
               .prop("type", "number")
               .val(parseFloat(replacedRetailPrice));
 
-          $('input#input-row-sqty-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+          $(`input[id*='input-row-sqty-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
               .removeClass('table-row-edit-disabled')
               .addClass('table-row-edit-enabled')
               .prop("disabled", false)
               .prop("type", "number");
 
-          $('input#input-row-wqty-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+          $(`input[id*='input-row-wqty-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
               .removeClass('table-row-edit-disabled')
               .addClass('table-row-edit-enabled')
               .prop("disabled", false)
@@ -299,7 +383,7 @@ $(document).ready(function () {
                 gEditedRow.push(obj);
             }
           }
-          $('input#input-row-sqty-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).focus().select();
+          $(`input[id*='input-row-sqty-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`).focus().select();
 
           arrNewData = [];
         } else {
@@ -388,37 +472,37 @@ $(document).ready(function () {
   this.editRow = function(productID, categoryID) {
     gEditedRow = [];
 
-    $('button#btn-save-row-'+productID+'-'+categoryID).css("display", "inline-block");
-    $('button#btn-cancel-row-'+productID+'-'+categoryID).css("display", "inline-block");
-    $('button#btn-edit-row-'+productID+'-'+categoryID).css("display", "none");
+    $(`button[id*='btn-save-row-${productID}-${categoryID}']`).css("display", "inline-block");
+    $(`button[id*='btn-cancel-row-${productID}-${categoryID}']`).css("display", "inline-block");
+    $(`button[id*='btn-edit-row-${productID}-${categoryID}']`).css("display", "none");
 
-    $('input#input-row-ref-'+productID+'-'+categoryID)
+    $(`input[id*='input-row-ref-${productID}-${categoryID}']`)
         .removeClass('table-row-edit-disabled')
         .addClass('table-row-edit-enabled')
         .prop("disabled", true);
 
-    $('input#input-row-pname-'+productID+'-'+categoryID)
+    $(`input[id*='input-row-pname-${productID}-${categoryID}']`)
         .removeClass('table-row-edit-disabled')
         .addClass('table-row-edit-enabled')
         .prop("disabled", false);
 
-    $('input#input-row-rprice-'+productID+'-'+categoryID)
+    $(`input[id*='input-row-rprice-${productID}-${categoryID}']`)
         .removeClass('table-row-edit-disabled')
         .addClass('table-row-edit-enabled')
         .prop("disabled", false);
 
-    var replacedRetailPrice = $('input#input-row-rprice-'+productID+'-'+categoryID).val().replace("$", "").replace(",", ""); 
-    $('input#input-row-rprice-'+productID+'-'+categoryID)
+    var replacedRetailPrice = $(`input[id*='input-row-rprice-${productID}-${categoryID}']`).val().replace("$", "").replace(",", ""); 
+    $(`input[id*='input-row-rprice-${productID}-${categoryID}']`)
         .prop("type", "number")
         .val(parseFloat(replacedRetailPrice));
 
-    $('input#input-row-sqty-'+productID+'-'+categoryID)
+    $(`input[id*='input-row-sqty-${productID}-${categoryID}']`)
         .removeClass('table-row-edit-disabled')
         .addClass('table-row-edit-enabled')
         .prop("disabled", false)
         .prop("type", "number");
 
-    $('input#input-row-wqty-'+productID+'-'+categoryID)
+    $(`input[id*='input-row-wqty-${productID}-${categoryID}']`)
         .removeClass('table-row-edit-disabled')
         .addClass('table-row-edit-enabled')
         .prop("disabled", false)
@@ -433,8 +517,8 @@ $(document).ready(function () {
 
   this.trKeypressEvent = function (productID, categoryID) {
     if(event.which == 13) {
-        var valSale = parseInt($('input#input-row-sqty-'+productID+'-'+categoryID).val()) == NaN ? 0 : parseInt($('input#input-row-sqty-'+productID+'-'+categoryID).val());
-        var valWare = parseInt($('input#input-row-wqty-'+productID+'-'+categoryID).val()) == NaN ? 0 : parseInt($('input#input-row-wqty-'+productID+'-'+categoryID).val());
+      var valSale = parseInt($(`input[id*='input-row-sqty-${productID}-${categoryID}']`).val()) == NaN ? 0 : parseInt($(`input[id*='input-row-sqty-${productID}-${categoryID}']`).val());
+      var valWare = parseInt($(`input[id*='input-row-wqty-${productID}-${categoryID}']`).val()) == NaN ? 0 : parseInt($(`input[id*='input-row-wqty-${productID}-${categoryID}']`).val());
 
         if(valSale > 100000 || valWare > 100000) {
             $.confirm({
@@ -448,7 +532,7 @@ $(document).ready(function () {
                   isHidden: false, // initially not hidden
                   isDisabled: false, // initially not disabled
                   action: function(cancelButton) {
-                      $('input#input-row-sqty-'+productID+'-'+categoryID).focus().select();
+                      $(`input[id*='input-row-sqty-${productID}-${categoryID}']`).focus().select();
                   }
                 }
               }
@@ -460,8 +544,8 @@ $(document).ready(function () {
   }
 
   this.saveRow = function (productID, categoryID) {
-    var valSale = parseInt($('input#input-row-sqty-'+productID+'-'+categoryID).val()) == NaN ? 0 : parseInt($('input#input-row-sqty-'+productID+'-'+categoryID).val());
-    var valWare = parseInt($('input#input-row-wqty-'+productID+'-'+categoryID).val()) == NaN ? 0 : parseInt($('input#input-row-wqty-'+productID+'-'+categoryID).val());
+    var valSale = parseInt($(`input[id*='input-row-sqty-${productID}-${categoryID}']`).val()) == NaN ? 0 : parseInt($(`input[id*='input-row-sqty-${productID}-${categoryID}']`).val());
+    var valWare = parseInt($(`input[id*='input-row-wqty-${productID}-${categoryID}']`).val()) == NaN ? 0 : parseInt($(`input[id*='input-row-wqty-${productID}-${categoryID}']`).val());
 
     if(valSale > 100000 || valWare > 100000) {
         $.confirm({
@@ -475,7 +559,7 @@ $(document).ready(function () {
                     isHidden: false, // initially not hidden
                     isDisabled: false, // initially not disabled
                     action: function(cancelButton) {
-                        $('input#input-row-sqty-'+productID+'-'+categoryID).focus().select();
+                        $(`input[id*=input-row-sqty-${productID}-${categoryID}']`).focus().select();
                     }
                 }
             }
@@ -584,37 +668,37 @@ $(document).ready(function () {
 
             gEditedRow = [];
 
-            $('button#btn-save-row-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).css("display", "inline-block");
-            $('button#btn-cancel-row-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).css("display", "inline-block");
-            $('button#btn-edit-row-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).css("display", "none");
+            $(`button[id*='btn-save-row-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`).css("display", "inline-block");
+            $(`button[id*='btn-cancel-row-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`).css("display", "inline-block");
+            $(`button[id*='btn-edit-row-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`).css("display", "none");
 
-            $('input#input-row-ref-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+            $(`input[id*='input-row-ref-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
                 .removeClass('table-row-edit-disabled')
                 .addClass('table-row-edit-enabled')
                 .prop("disabled", true);
 
-            $('input#input-row-pname-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+            $(`input[id*='input-row-pname-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
                 .removeClass('table-row-edit-disabled')
                 .addClass('table-row-edit-enabled')
                 .prop("disabled", false);
 
-            $('input#input-row-rprice-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+            $(`input[id*='input-row-rprice-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
                 .removeClass('table-row-edit-disabled')
                 .addClass('table-row-edit-enabled')
                 .prop("disabled", false);
 
-            var replacedRetailPrice = $('input#input-row-rprice-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).val().replace("$", "").replace(",", ""); 
-            $('input#input-row-rprice-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+            var replacedRetailPrice = $(`input[id*='input-row-rprice-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`).val().replace("$", "").replace(",", ""); 
+            $(`input[id*='input-row-rprice-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
                 .prop("type", "number")
                 .val(parseFloat(replacedRetailPrice));
 
-            $('input#input-row-sqty-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+            $(`input[id='input-row-sqty-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
                 .removeClass('table-row-edit-disabled')
                 .addClass('table-row-edit-enabled')
                 .prop("disabled", false)
                 .prop("type", "number");
 
-            $('input#input-row-wqty-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID)
+            $(`input[id*='input-row-wqty-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`)
                 .removeClass('table-row-edit-disabled')
                 .addClass('table-row-edit-enabled')
                 .prop("disabled", false)
@@ -626,7 +710,7 @@ $(document).ready(function () {
                 }
             }
 
-            $('input#input-row-sqty-'+arrNewData[0].PRODUCTID+'-'+arrNewData[0].CATEGORYID).focus().select();
+            $(`input[id*='input-row-sqty-${arrNewData[0].PRODUCTID}-${arrNewData[0].CATEGORYID}']`).focus().select();
 
         } else {
             $('tbody#display-report').html(`<div class="report-no-data"><p>no data to display</p></div>`);

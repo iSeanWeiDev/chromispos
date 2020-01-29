@@ -1,6 +1,7 @@
 $(document).ready(function () {
   var gData = [];
   var gfilteredData = [];
+  var gSupplier = [];
 
   var flagUsedGData = false;
   var rowCount = 20;
@@ -14,6 +15,15 @@ $(document).ready(function () {
   });
 
   function returnRowHTML(data) {
+    if (data.SUPPLIERID == null || data.SUPPLIERID == undefined) {
+      var supplierName = "Null";
+    } else {
+      for (var obj of gSupplier) {
+        if (obj.ID == data.SUPPLIERID) {
+          var supplierName = obj.SUPPLIERNAME;
+        }
+      }
+    }
     var strRowHTML = `<tr>
                         <td scope="row" style="width: 10%;">
                             ${ data.REFERENCE }
@@ -26,13 +36,21 @@ $(document).ready(function () {
                             &nbsp;&nbsp;
                             ${ data.PRODUCTNAME }
                         </td>
-                        <td style="width: 8%;">
+                        <td style="width: 6%;">
                             $${formatNumber(data.PRICESELL.toFixed(2)) }
                         </td>
-                        <td class="text-info text-center font-weight-bold" style="width: 8%;">
+                        <th class="text-info p-1" 
+                            style="width: 6%;">
+                            ${data.CATEGORYNAME.substring(0, 8)}
+                        </th>
+                        <th class="text-info p-1" 
+                            style="width: 6%;">
+                            ${supplierName}
+                        </th>
+                        <td class="text-info text-center font-weight-bold" style="width: 5%;">
                             ${ data.SALESFLOORUNIT }
                         </td>
-                        <td class="text-info text-center font-weight-bold" style="width: 8%;">
+                        <td class="text-info text-center font-weight-bold" style="width: 5%;">
                             ${ data.WAREHOUSEUNIT }
                         </td>
                         <td class="text-info text-center font-weight-bold" 
@@ -64,7 +82,7 @@ $(document).ready(function () {
                             ${ data.DATA365 }
                         </td>
                         <td class="text-danger text-center font-weight-bold" 
-                            style="width: 8%;">
+                            style="width: 4%;">
                             ${ data.ESTIMATION }
                         </td>
                     </tr>`;
@@ -215,6 +233,7 @@ $(document).ready(function () {
   }
 
   function getSupplierList() {
+    gSupplier = [];
     var method = "GET";
     var url = "/reports/suppliers";
     var sendData = {
@@ -230,16 +249,16 @@ $(document).ready(function () {
 
           return 0;
       });
-
+      gSupplier = arrSupplier;
       if(callback && callback.flag == true) {
-        var strInnerHtml = `<option value="all" selected> All Supplier </option>`;
+        var strInnerHtml = `<option value="all" selected> All Suppliers </option>`;
 
         for(var obj of arrSupplier) {
             if(obj.NAME != "") {
                 strInnerHtml += `<option value="${obj.ID}">${obj.SUPPLIERNAME}</option>`;
             }
         }
-
+        strInnerHtml += `<option value="none">No supplier</option>`;
         $('select#supplier').html(strInnerHtml);
       } else {
         // validation
@@ -260,30 +279,35 @@ $(document).ready(function () {
     flagUsedGData = false;
     EasyLoading.show();
 
-    if ($('tbody#display-report').val() == "") {
-      $('tbody#display-report').html(`<div class="report-no-data"><p>No data to display</p></div>`);
-      $('div#pagination').css("display", "none");
-    }
+    // if ($('tbody#display-report').val() == "") {
+    //   $('tbody#display-report').html(`<div class="report-no-data"><p>No data to display</p></div>`);
+    //   $('div#pagination').css("display", "none");
+    // }
 
     returnData(method, url, sendData, callback => {
       EasyLoading.hide();
 
       if (callback && callback.flag == true) {
-        gData = callback.data;
-        var total = Math.round(gData.length / rowCount);
-        var initRowCount = gData.length < rowCount ? gData.length : rowCount;
-        var initTotal = gData.length < rowCount -1 ? 1 : total;
-        var strHTML = '';
-
-        for (var i = 0; i < initRowCount; i++) {
-          strHTML += returnRowHTML(gData[i]);
+        if (callback.data.length > 0) {
+          gData = callback.data;
+          var total = Math.round(gData.length / rowCount);
+          var initRowCount = gData.length < rowCount ? gData.length : rowCount;
+          var initTotal = gData.length < rowCount -1 ? 1 : total;
+          var strHTML = '';
+  
+          for (var i = 0; i < initRowCount; i++) {
+            strHTML += returnRowHTML(gData[i]);
+          }
+  
+          $('tbody#display-report').html(strHTML);
+          $('div#pagination').css("display", "block");
+          $('span#current-rows').html(`Current rows: ${ initRowCount }`);
+          $('span#total-rows').html(`Total rows: ${ gData.length }`);
+          $('#pagination-display').val(` ${crrPage} / ${initTotal}`);
+        } else {
+          $('tbody#display-report').html(`<div class="report-no-data"><p>No data to display</p></div>`);
         }
-
-        $('tbody#display-report').html(strHTML);
-        $('div#pagination').css("display", "block");
-        $('span#current-rows').html(`Current rows: ${ initRowCount }`);
-        $('span#total-rows').html(`Total rows: ${ gData.length }`);
-        $('#pagination-display').val(` ${crrPage} / ${initTotal}`);
+        
       } else {
         EasyLoading.hide();
         $('tbody#display-report').html(`<div class="report-no-data"><p>No data to display</p></div>`);
@@ -292,26 +316,38 @@ $(document).ready(function () {
   }
 
   function init() {
-    EasyLoading.show();
-
+    // EasyLoading.show();
+    gData = [];
     if ($('tbody#display-report').val() == "") {
-      $('tbody#display-report').html(`<div class="report-no-data"><p>No data to display</p></div>`);
+      $('tbody#display-report').html(`<div class="report-got-data"><p>Ready to start</p></div>`);
+      // $('tbody#display-report').html(`<div class="report-no-data"><p>No data to display</p></div>`);
       $('div#pagination').css("display", "none");
     }
 
-    var method = "GET";
-    var url = '/reports/inventory';
-    var sendData = {
-      category: "all",
-      supplier: "all"
-    }
+    // var method = "GET";
+    // var url = '/reports/inventory';
+    // var sendData = {
+    //   category: "all",
+    //   supplier: "all"
+    // }
 
     getCategoryList();
     getSupplierList();
-    customEventCapture(method, url, sendData);
+    // customEventCapture(method, url, sendData);
   }
 
   init();
+  this.runReport = function() {
+    gData = [];
+    var method = "GET";
+    var url = "/reports/inventory";
+    var sendData = {
+      category: $('select#category').val().toString(),
+      supplier: $('select#supplier').val().toString(),
+    }
+
+    customEventCapture(method, url, sendData);
+  }
   
   this.getModalData = function(productID, categoryID) {
     var strModalHTML = returnModalHTML(productID, categoryID);
@@ -331,11 +367,11 @@ $(document).ready(function () {
           strInnerHtml += returnModalBodyHTML(callback.data[i]);
         }
 
-        $('tbody#modal-table-body-'+productID+'-'+categoryID)
+        $(`tbody[id*='modal-table-body-${productID}-${categoryID}']`)
           .html(strInnerHtml);
       } else {
         EasyLoading.hide();
-        $('tbody#modal-table-body-'+productID+'-'+categoryID)
+        $(`tbody[id*='modal-table-body-${productID}-${categoryID}']`)
           .html(`<div class="report-no-data"><p>No data to display</p></div>`);
       }
     });
@@ -415,27 +451,27 @@ $(document).ready(function () {
   }
 
   $('select#category').change(function (e) {
-    var method = "GET";
-    var url = "/reports/inventory";
-    var sendData = {
-      category: $('select#category').val().toString(),
-      supplier: $('select#supplier').val().toString(),
-    }
+    // var method = "GET";
+    // var url = "/reports/inventory";
+    // var sendData = {
+    //   category: $('select#category').val().toString(),
+    //   supplier: $('select#supplier').val().toString(),
+    // }
 
-    customEventCapture(method, url, sendData);
-    e.preventDefault();
+    // customEventCapture(method, url, sendData);
+    // e.preventDefault();
   });
 
   $('select#supplier').change(function (e) {
-    var method = "GET";
-    var url = "/reports/inventory";
-    var sendData = {
-      category: $('select#category').val().toString(),
-      supplier: $('select#supplier').val().toString(),
-    }
+    // var method = "GET";
+    // var url = "/reports/inventory";
+    // var sendData = {
+    //   category: $('select#category').val().toString(),
+    //   supplier: $('select#supplier').val().toString(),
+    // }
 
-    customEventCapture(method, url, sendData);
-    e.preventDefault();
+    // customEventCapture(method, url, sendData);
+  //   e.preventDefault();
   });
 
   $('input#table-search').keypress(function (e) { 
@@ -449,7 +485,7 @@ $(document).ready(function () {
         searchKey = searchKey.toLowerCase();
 
         for(var obj of gData) {
-          var flagReference = obj.REFERENCE.toLowerCase().indexOf(searchKey) !== -1 ? true : false;
+          var flagReference = obj.CODE.toLowerCase().indexOf(searchKey) !== -1 ? true : false;
           var flagName = obj.PRODUCTNAME.toLowerCase().indexOf(searchKey) !== -1 ? true : false;
           
           if(flagReference == true || flagName == true) {

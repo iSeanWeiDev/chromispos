@@ -14,6 +14,7 @@ $(document).ready(function () {
   var crrPage = 1;
 
   function returnRowHTML(data) {
+    var price = data.PRICE == null ? 0 : data.PRICE.toFixed(2);
     var strHTML = `<tr>
                     <td scope="row" 
                         class="text-left"
@@ -26,7 +27,7 @@ $(document).ready(function () {
                     </td>
                     <td "text-left"
                         style="width: calc(100%/6)">
-                        $${formatNumber(data.PRICE.toFixed(2))}
+                        $${formatNumber(price)}
                     </td>
                     <td class="text-center"
                         style="width: calc(100%/6)">
@@ -155,6 +156,11 @@ $(document).ready(function () {
   });
 
   this.generateReport = function() {
+    gData = [];
+    gfilteredData = [];
+    flagUsedGData = false;
+    crrPage = 1;
+
     var hostName = $('input#database-index').val();
     if (hostName != "") {
       var sendData = {};
@@ -191,14 +197,19 @@ $(document).ready(function () {
         
         switch (parseInt(dateRange)) {
           case 1: // Today
-            var crrDate = new Date().toISOString();
-            var arrDate = crrDate.split('T')[0].split('-');
+            // var crrDate = new Date().setHours((new Date()).getHours-8).toISOString();
+            var currDate = new Date(Date.now());
+            currDate.setHours(currDate.getHours() - 8);
+            currDate = new Date(currDate).toISOString();
+            var arrDate = currDate.split('T')[0].split('-');
 
             customStartDate = arrDate[0] + '-' + arrDate[1] + '-' + arrDate[2] + 'T00:00:00.000Z';
             customEndDate = arrDate[0] + '-' + arrDate[1] + '-' + arrDate[2] + 'T23:59:59.999Z';
             break;
           case 2: // Yesterday
-            var date2 = (new Date()).setDate((new Date()).getDate() - 1);
+            var currDate = new Date(Date.now());
+            currDate.setHours(currDate.getHours() - 8);
+            var date2 = (currDate).setDate(currDate.getDate() - 1);
             var isoDate2 = (new Date(date2)).toISOString();
             var arrDate2 = isoDate2.split('T')[0].split('-');
 
@@ -206,7 +217,7 @@ $(document).ready(function () {
             customEndDate = arrDate2[0] + '-' + arrDate2[1] + '-' + arrDate2[2] + 'T23:59:59.999Z';
             break;
           case 3: // Last 7 Days
-            var date7 = (new Date()).setDate((new Date()).getDate() - 7);
+            var date7 = (new Date(Date.now())).setDate((new Date(Date.now())).getDate() - 7);
             var isoDate7 = (new Date(date7)).toISOString();
             var arrDate7 = isoDate7.split('T')[0].split('-');
             var crrDate7 = new Date().toISOString();
@@ -216,13 +227,13 @@ $(document).ready(function () {
             customEndDate= arrEndDate7[0] + '-' + arrEndDate7[1] + '-' + arrEndDate7[2] + 'T23:59:59.999Z';
             break;
           case 4: // This month
-            var crrDate = new Date().toISOString();
+            var crrDate = new Date(Date.now()).toISOString();
             var arrDate = crrDate.split('T')[0].split('-');
             customStartDate = arrDate[0] + '-' + arrDate[1] + '-01T00:00:00.000Z';
             customEndDate = (new Date(arrDate[0], arrDate[1], 0).toISOString()).split('T')[0] + 'T23:59:59.999Z';
             break;
           case 5: // Last month
-            var dateObj = new Date();
+            var dateObj = new Date(Date.now());
             dateObj.setDate(0);
         
             var month = dateObj.getMonth() + 1;
@@ -234,19 +245,19 @@ $(document).ready(function () {
             customStartDate = strDate.split('-')[0] + '-' + strDate.split('-')[1] + '-01T00:00:00.000Z'
             break;
           case 6: // Last 90 days
-            var newDate = new Date();
+            var newDate = new Date(Date.now());
             newDate.setDate(newDate.getDate() - 90);
             customStartDate = newDate.toISOString().split('T')[0] + 'T00:00:00.000Z';
-            customEndDate = new Date().toISOString();
+            customEndDate = new Date(Date.now()).toISOString();
             break;
           case 7: // This year
-            var crrDate = new Date().toISOString();
+            var crrDate = new Date(Date.now()).toISOString();
             var arrDate = crrDate.split('T')[0].split('-');
             customStartDate = arrDate[0] + '-01-01T00:00:00.000Z';
-            customEndDate = new Date().toISOString();
+            customEndDate = new Date(Date.now()).toISOString();
             break;
           case 8: // Last year
-            var crrDate = new Date().toISOString();
+            var crrDate = new Date(Date.now()).toISOString();
             var arrDate = crrDate.split('T')[0].split('-');
             customStartDate = (arrDate[0]-1) + '-01-01T00:00:00.000Z';
             customEndDate = (arrDate[0]-1) + '-12-31T23:59:59.999Z';
@@ -265,6 +276,7 @@ $(document).ready(function () {
       }
 
       if (getObjectSize(sendData) > 0) {
+        // console.log(sendData);
         EasyLoading.show();
         var method = "GET";
         var url = "/reports/productsales";

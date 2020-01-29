@@ -97,7 +97,6 @@ $(document).ready(function () {
     }
 
     returnData(method, url, sendData, callback => {
-      console.log(callback);
       if (callback && callback.flag == true) {
         if (callback.data.length > 0) {
           gData = callback.data;

@@ -22,7 +22,7 @@ module.exports = {
         updatedAt: new Date()
       },
       {
-        userName: 'Employeers',
+        userName: 'Employees',
         email: 'employee@chromispos.com',
         password: '$2a$10$pIDutHrn0lp08K8iq7x3j.AslEOjXlr41jqdd2yrhLvxNnwYoh0DW',
         role: 'user',

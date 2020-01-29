@@ -1,5 +1,5 @@
 var mysql = require('mysql2');
-var queryList = require('../../database/queries/timeClock');
+var queryList = require('../../database/queries/reports/timeClock');
 var sqliteService = require('../../services/sqlite');
 
 var timeClockController = {

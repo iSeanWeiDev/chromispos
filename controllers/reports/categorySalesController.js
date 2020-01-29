@@ -1,5 +1,5 @@
 var mysql = require('mysql2');
-var queryList = require('../../database/queries/categorySales');
+var queryList = require('../../database/queries/reports/categorySales');
 var sqliteService = require('../../services/sqlite');
 
 var categorySalesController = {

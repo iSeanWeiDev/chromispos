@@ -32,8 +32,6 @@ var stockDiaryController = {
           })
         }
 
-        console.log(result);
-
         var arrTwo = [];
         for (var i = 0; i < result.length; i++) {
           for (var j = i+1; j < result.length; j++) {
@@ -64,6 +62,7 @@ var stockDiaryController = {
             flag: true,
             data: sendData
           });
+          
           dbConn.end();
         } else {
           res.status(200).json({
@@ -161,19 +160,18 @@ var stockDiaryController = {
 
         setTimeout(() => {
           if (fSale == true && fWare == true) {
-            dbConn.end();
             res.status(200).json({
               flag: true,
               data: resultProdut
             });
           } else {
-            dbConn.end();
-
             res.status(401).json({
               flag: false,
               data: resultProdut
             })
           }
+
+          dbConn.end();
         }, 300);
       });
     });

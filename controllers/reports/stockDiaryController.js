@@ -1,7 +1,7 @@
 require('dotenv').config();
 var mysql = require('mysql2');
 var sqliteService = require('../../services/sqlite');
-var queryList = require('../../database/queries/stockDiary');
+var queryList = require('../../database/queries/reports/stockDiary');
 
 var stockDiaryController = {
   getData: (req, res) => {
@@ -42,6 +42,7 @@ var stockDiaryController = {
                   PRODUCTID: results[i].PRODUCTID,
                   CATEGORYID: results[i].CATEGORYID,
                   REFERENCE: results[i].REFERENCE,
+                  CODE: results[i].CODE,
                   PRODUCTNAME: results[i].PRODUCTNAME,
                   PRICESELL: results[i].PRICESELL,
                   SALESFLOORUNIT:  results[i].SALESFLOORUNIT,
@@ -54,6 +55,7 @@ var stockDiaryController = {
                   PRODUCTID: results[i].PRODUCTID,
                   CATEGORYID: results[i].CATEGORYID,
                   REFERENCE: results[i].REFERENCE,
+                  CODE: results[i].CODE,
                   PRODUCTNAME: results[i].PRODUCTNAME,
                   PRICESELL: results[i].PRICESELL,
                   SALESFLOORUNIT:  results[i+1].SALESFLOORUNIT,
@@ -164,6 +166,14 @@ var stockDiaryController = {
         }
       });
 
+      var productUpdate2Query = queryList.productUpdate2;
+      var productUpdate2Params = [req.body.changedCategoryID, req.body.changedSupplierID, req.body.productID];
+      dbConn.query(productUpdate2Query, productUpdate2Params, (err, result) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+
       setTimeout(() => {
         if (fSale == true && fWare == true) {
           res.status(200).json({
@@ -174,6 +184,72 @@ var stockDiaryController = {
           dbConn.end();
         }
       }, 300);
+    });
+  },
+  getCategories: (req, res) => {
+    sqliteService.getDbInfoByName(process.env.SHOP_NAME, cb => {
+      var dbInfo = cb;
+
+      var dbConn = mysql.createConnection({
+        host: dbInfo.host,
+        user: dbInfo.userName,
+        password: dbInfo.password,
+        database: dbInfo.dbName,
+        port: dbInfo.port,
+      });
+
+      var query = queryList.getCategories;
+      var params = [];
+
+      dbConn.query(query, params, (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(400).json({
+            flag: false,
+            data: err,
+          });
+        }
+
+        res.status(201).json({
+          flag: true, 
+          data: result,
+        });
+      });
+
+      dbConn.end();
+    });
+  },
+  getSuppliers: (req, res) => {
+    sqliteService.getDbInfoByName(process.env.SHOP_NAME, cb => {
+      var dbInfo = cb;
+      
+      var dbConn = mysql.createConnection({
+        host: dbInfo.host,
+        user: dbInfo.userName,
+        password: dbInfo.password,
+        database: dbInfo.dbName,
+        port: dbInfo.port,
+      });
+
+      var query = queryList.getSuppliers;
+      var params = [];
+
+      dbConn.query(query, params, (err, result) => {
+        if (err) {
+          console.log(err);
+          return res.status(400).json({
+            flag: false,
+            data: err,
+          })
+        }
+
+        res.status(201).json({
+          flag: true, 
+          data: result,
+        });
+      });
+
+      dbConn.end();
     });
   }
 }

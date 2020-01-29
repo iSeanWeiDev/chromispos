@@ -86,9 +86,16 @@
               <div class="report-list-category">
                   <select class="custom-select " name="" id="supplier">
                       <option class="font-weight-bold" value="0" selected>
-                          All Supplier
+                          All Suppliers
                       </option>
                   </select>
+              </div>
+
+              <div class="report-list-category">
+                <button
+                  onclick="runReport()" 
+                  class="btn btn-outline-info">Run report</button
+                  >
               </div>
               
               <div class="report-body-title-center">
@@ -118,18 +125,28 @@
                         </th>
                         <th onclick="sortColumn(3)"
                             class="text-dark font-weight-bold p-1 sortStyle" 
-                            style="width: 8%;">
-                            Retail Price
+                            style="width: 6%;">
+                            Price
+                        </th>
+
+                        <th class="text-dark font-weight-bold p-1" 
+                            style="width: 6%;">
+                            Category
+                        </th>
+
+                        <th class="text-dark font-weight-bold p-1" 
+                            style="width: 6%;">
+                            Supplier
                         </th>
                         <th onclick="sortColumn(4)"
                             class="text-dark font-weight-bold p-1 sortStyle" 
-                            style="width: 8%;">
-                            QTY S
+                            style="width: 5%;">
+                            QTY.S
                         </th>
                         <th onclick="sortColumn(5)"
                             class="text-dark font-weight-bold p-1 sortStyle" 
-                            style="width: 8%;">
-                            QTY W
+                            style="width: 5%;">
+                            QTY.W
                         </th>
                         <th onclick="sortColumn(6)"
                             class="text-info text-center font-weight-bold p-1 sortStyle" 
@@ -168,8 +185,8 @@
                         </th>
                         <th onclick="sortColumn(13)"
                             class="text-danger text-center font-weight-bold p-1 sortStyle" 
-                            style="width: 8%;">
-                            Stock Days
+                            style="width: 4%;">
+                            S.D
                         </th>
                     </tr>
                 </thead>

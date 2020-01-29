@@ -1,5 +1,5 @@
 var mysql = require('mysql2');
-var queryList = require('../../database/queries/productSales');
+var queryList = require('../../database/queries/reports/productSales');
 var sqliteService = require('../../services/sqlite');
 
 var productSalesController = {
@@ -14,21 +14,27 @@ var productSalesController = {
           req.query.startDate,
           req.query.endDate,
         ];
-      } else if (req.query.category != 'all' && req.query.supplier == 'all') {
+      } 
+      
+      if (req.query.categoryID != 'all' && req.query.supplierID == 'all') {
         var query = queryList.getData.replace('***', `AND PRODUCTS.CATEGORY = '${req.query.categoryID}'`);
 
         var params = [
           req.query.startDate,
           req.query.endDate,
         ];
-      } else if (req.query.category == 'all' && req.query.supplier != 'all') {
+      }
+      
+      if (req.query.categoryID == 'all' && req.query.supplierID != 'all') {
         var query = queryList.getData.replace('***', `AND PRODUCTS.SUPPLIER = '${req.query.supplierID}'`);
 
         var params = [
           req.query.startDate,
           req.query.endDate,
         ];
-      } else if (req.query.category != 'all' && req.query.supplier != 'all') {
+      }
+      
+      if (req.query.categoryID != 'all' && req.query.supplierID != 'all') {
         var query = queryList.getData.replace('***', `AND PRODUCTS.CATEGORY = '${req.query.categoryID}' AND PRODUCTS.SUPPLIER = '${req.query.supplierID}'`);
 
         var params = [

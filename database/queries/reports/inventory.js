@@ -1,10 +1,13 @@
 var inventory = {
   stockCurrent: `SELECT 
                   PRODUCTS.ID AS PRODUCTID,
-                  CATEGORIES.ID AS CATEGORYID,                    
-                  PRODUCTS.REFERENCE, 
+                  CATEGORIES.ID AS CATEGORYID,
+                  CATEGORIES.NAME AS CATEGORYNAME,            
+                  PRODUCTS.REFERENCE AS REFERENCE, 
+                  PRODUCTS.CODE as CODE,
                   PRODUCTS.NAME AS PRODUCTNAME, 
-                  PRODUCTS.PRICESELL, 
+                  PRODUCTS.PRICESELL AS PRICESELL, 
+                  PRODUCTS.SUPPLIER AS SUPPLIERID,
                   IF(LOCATIONS.ID = ?, STOCKCURRENT.UNITS, "##") as SALESFLOORUNIT,											
                   IF(LOCATIONS.ID = ?, STOCKCURRENT.UNITS, "##") as WAREHOUSEUNIT
                 FROM STOCKCURRENT 
@@ -110,12 +113,27 @@ var inventory = {
                   AND RECEIPTS.DATENEW BETWEEN (NOW() -INTERVAL 365 DAY) AND NOW()  
                 GROUP BY TICKETLINES.PRODUCT
                 ORDER BY TICKETLINES.PRODUCT)`,
+    // itemSoldHistory: `select 
+    //                     DATE_FORMAT( d.DATENEW,'%m-%d-%Y') AS DATENEW, 
+    //                     a.TICKETID, 
+    //                     b.units, 
+    //                     b.price, 
+    //                     e.TOTAL
+    //                   from
+    //                     tickets a, 
+    //                     ticketlines b, products c, receipts d, payments e
+    //                   where a.id = b.TICKET
+    //                     and c.id = b.PRODUCT
+    //                     and b.PRODUCT = ?
+    //                     and a.id = d.id
+    //                     and e.RECEIPT = d.ID
+    //                   order by  DATENEW desc, a.TICKETID`
     itemSoldHistory: `select 
                         DATE_FORMAT( d.DATENEW,'%m-%d-%Y') AS DATENEW, 
-                        a.TICKETID, 
-                        b.units, 
+                        a.TICKETID as TICKETID, 
+                        sum(b.units) as units, 
                         b.price, 
-                        e.TOTAL
+                        sum(e.TOTAL) as TOTAL
                       from
                         tickets a, 
                         ticketlines b, products c, receipts d, payments e
@@ -124,6 +142,7 @@ var inventory = {
                         and b.PRODUCT = ?
                         and a.id = d.id
                         and e.RECEIPT = d.ID
+                      GROUP BY DATE_FORMAT(DATENEW,'%m-%d-%Y'), TICKETID
                       order by  DATENEW desc, a.TICKETID`
 }
 

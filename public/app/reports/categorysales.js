@@ -183,6 +183,7 @@ $(document).ready(function () {
               }
 
               var allOtherTotal = totalGross - sumCCSouvenirs - sumCathedralOwned - sumFoodDrink;
+
               if(gDBConn.hostName == "Windows server") {
                 $('div#sub-report').css('display', 'block');
                 $('div#sub-report-values').html(`<span>
@@ -201,6 +202,18 @@ $(document).ready(function () {
                                                         10% = $${ formatNumber((0.1*allOtherTotal).toFixed(2)) } &emsp;
                                                         15% = $${ formatNumber((0.15*allOtherTotal).toFixed(2)) } &emsp;
                                                         20% = $${ formatNumber((0.2*allOtherTotal).toFixed(2)) }
+                                                    </span> <br /> <hr />
+                                                    <span>
+                                                        $${ formatNumber((sumCCSouvenirs).toFixed(2)) } &emsp;
+                                                    </span>
+                                                    <span>
+                                                        $${ formatNumber((sumCathedralOwned).toFixed(2)) } &emsp;
+                                                    </span>
+                                                    <span>
+                                                        $${ formatNumber((sumFoodDrink).toFixed(2)) } &emsp;
+                                                    </span>
+                                                    <span>
+                                                        $${ formatNumber((allOtherTotal).toFixed(2)) } &emsp;
                                                     </span>`);
               }
 

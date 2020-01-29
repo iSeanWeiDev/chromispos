@@ -1,7 +1,7 @@
 require('dotenv').config();
 var mysql = require('mysql2');
 var sqliteService = require('../../services/sqlite');
-var queryList = require('../../database/queries/salesByYear');
+var queryList = require('../../database/queries/reports/salesByYear');
 
 var salesByYearController = {
   getData: (req, res) => {

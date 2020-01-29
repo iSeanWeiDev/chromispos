@@ -56,8 +56,8 @@ $(document).ready(function () {
       } 
 
       $.ajax({
-        type: "POST",
-        url: "/setting/delete",
+        type: "DELETE",
+        url: "/settings",
         data: sendData,
         dataType: "JSON"
       }).done(function(response) {
@@ -71,6 +71,7 @@ $(document).ready(function () {
           );
           
           $('div#headingOne-'+id).remove();
+          windows.reload();
         } else {
           mkNoti(
             'Failure!',

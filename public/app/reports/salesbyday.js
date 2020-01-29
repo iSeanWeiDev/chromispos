@@ -25,6 +25,7 @@ $(document).ready(function () {
                             <td>$${formatNumber(validateNumber(data.TOTALSALES.toFixed(2)))}</td>
                             <td>$${formatNumber(validateNumber(data.TOTALTAXCOLLECTED.toFixed(2)))}</td>
                             <td>$${formatNumber(validateNumber(data.TOTAL.toFixed(2)))}</td>
+                            <td>${data.COUNTORDER}</td>
                           </tr>`;
         return strHTML;
     }
@@ -231,6 +232,7 @@ $(document).ready(function () {
                                     <th class="text-dark font-weight-bold p-1">
                                             $${formatNumber(validateNumber(total.toFixed(2)))}
                                     </th>
+                                    
                                   </tr>`);
               } else {
                 $('tbody#display-report').html(`<div class="report-no-data"><p>no data to display</p></div>`);

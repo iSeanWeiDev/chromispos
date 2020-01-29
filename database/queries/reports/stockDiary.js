@@ -3,6 +3,8 @@ var stockDiary = {
               PRODUCTS.ID AS PRODUCTID,
               CATEGORIES.ID AS CATEGORYID,                    
               PRODUCTS.REFERENCE, 
+              PRODUCTS.CODE,
+              PRODUCTS.SUPPLIER,
               PRODUCTS.NAME AS PRODUCTNAME, 
               PRODUCTS.PRICESELL, 
               IF(LOCATIONS.ID = ?, STOCKCURRENT.UNITS, "##") as SALESFLOORUNIT,											
@@ -27,6 +29,9 @@ var stockDiary = {
   stockCurrentInsert: `INSERT INTO 
                         STOCKCURRENT (LOCATION, PRODUCT, ATTRIBUTESETINSTANCE_ID, UNITS, SITEGUID, SFLAG)
                       VALUES (?, ?, null, ?, ?, ?)`,
+  getCategories: `SELECT ID, NAME FROM categories ORDER BY NAME ASC`,
+  getSuppliers: `SELECT ID, SUPPLIERNAME FROM suppliers ORDER BY SUPPLIERNAME ASC`,
+  productUpdate2: `UPDATE PRODUCTS SET CATEGORY = ?, SUPPLIER = ? WHERE ID = ?`,
 }
 
 module.exports = stockDiary;
